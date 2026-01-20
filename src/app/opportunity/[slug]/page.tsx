@@ -1,0 +1,168 @@
+import { getOpportunityBySlug, getOpportunities } from '@/lib/data';
+import { notFound } from 'next/navigation';
+import Image from 'next/image';
+import { Badge } from '@/components/ui/badge';
+import {
+  Building,
+  Calendar,
+  Globe,
+  GraduationCap,
+  Link as LinkIcon,
+  MapPin,
+  Share2,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { formatDate } from '@/lib/utils';
+import Link from 'next/link';
+import { Separator } from '@/components/ui/separator';
+import { OpportunitySummary } from '@/components/opportunity-summary';
+
+type OpportunityPageProps = {
+  params: {
+    slug: string;
+  };
+};
+
+export async function generateStaticParams() {
+  const opportunities = await getOpportunities();
+  return opportunities.map((opportunity) => ({
+    slug: opportunity.slug,
+  }));
+}
+
+export default async function OpportunityPage({ params }: OpportunityPageProps) {
+  const opportunity = await getOpportunityBySlug(params.slug);
+
+  if (!opportunity) {
+    notFound();
+  }
+
+  return (
+    <div className="container mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+        <div className="lg:col-span-2">
+          <article>
+            <div className="relative h-64 md:h-96 w-full rounded-lg overflow-hidden mb-8">
+              <Image
+                src={opportunity.image}
+                alt={opportunity.title}
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 67vw"
+                data-ai-hint={opportunity.imageHint}
+                priority
+              />
+            </div>
+
+            <Badge variant={opportunity.category === 'Career Advice' || opportunity.category === 'Study Abroad' ? 'secondary' : 'default'} className="mb-2">{opportunity.category}</Badge>
+            <h1 className="font-headline text-3xl md:text-4xl font-extrabold tracking-tight mb-4">
+              {opportunity.title}
+            </h1>
+            
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-muted-foreground mb-6">
+              <div className="flex items-center gap-2">
+                <Building className="w-4 h-4" />
+                <span>{opportunity.organization}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4" />
+                <span>{opportunity.location}</span>
+              </div>
+               <div className="flex items-center gap-2">
+                <Globe className="w-4 h-4" />
+                <span>{opportunity.country}</span>
+              </div>
+               <div className="flex items-center gap-2">
+                <GraduationCap className="w-4 h-4" />
+                <span>{opportunity.level}</span>
+              </div>
+            </div>
+
+            <Separator className="my-8" />
+            
+            <OpportunitySummary description={opportunity.description} />
+
+            <div className="prose max-w-none mt-8">
+              {opportunity.eligibility.length > 0 && (
+                <>
+                  <h2 className="font-headline text-2xl font-bold">Eligibility</h2>
+                  <ul className="list-disc pl-5">
+                    {opportunity.eligibility.map((item, index) => (
+                      <li key={index}>{item}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
+
+              {opportunity.benefits.length > 0 && (
+                <>
+                  <h2 className="font-headline text-2xl font-bold mt-8">Benefits</h2>
+                  <ul className="list-disc pl-5">
+                    {opportunity.benefits.map((item, index) => (
+                      <li key={index}>{item}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              
+               {opportunity.applicationProcess && (
+                <>
+                  <h2 className="font-headline text-2xl font-bold mt-8">Application Process</h2>
+                  <p>{opportunity.applicationProcess}</p>
+                </>
+               )}
+
+            </div>
+          </article>
+        </div>
+
+        <aside className="lg:col-span-1">
+          <div className="sticky top-24 space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="font-headline text-xl">
+                  Opportunity Details
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center text-sm">
+                  <Calendar className="w-5 h-5 mr-3 text-muted-foreground" />
+                  <div>
+                    <p className="font-semibold">Application Deadline</p>
+                    <p className="text-muted-foreground">
+                      {formatDate(opportunity.deadline)}
+                    </p>
+                  </div>
+                </div>
+                <Button asChild className="w-full" size="lg">
+                  <Link href={opportunity.applicationLink} target="_blank" rel="noopener noreferrer">
+                    Apply Now <LinkIcon className="w-4 h-4 ml-2" />
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="font-headline text-xl">
+                  Share this Opportunity
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                 <Button variant="outline" className="w-full">
+                  <Share2 className="w-4 h-4 mr-2" /> Share
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </aside>
+      </div>
+    </div>
+  );
+}
