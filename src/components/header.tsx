@@ -3,17 +3,13 @@
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import {
-  Award,
   Briefcase,
   Compass,
-  FileText,
-  GraduationCap,
   Lightbulb,
   Menu,
   Plane,
   Search,
   User,
-  Users,
   X,
 } from 'lucide-react';
 
@@ -25,14 +21,11 @@ import type { NavItem } from '@/lib/types';
 import React from 'react';
 
 const navItems: NavItem[] = [
-  { name: 'For You', href: '/foryou', icon: User },
+  { name: 'AI Job Finder', href: '/foryou', icon: User },
   { name: 'Jobs', href: '/opportunities/Jobs', icon: Briefcase },
-  { name: 'Scholarships', href: '/opportunities/Scholarships', icon: GraduationCap },
-  { name: 'Internships', href: '/opportunities/Internships', icon: FileText },
-  { name: 'Fellowships', href: '/opportunities/Fellowships', icon: Users },
-  { name: 'Grants', href: '/opportunities/Grants', icon: Award },
   { name: 'Career Advice', href: '/opportunities/Career-Advice', icon: Lightbulb },
   { name: 'Study Abroad', href: '/opportunities/Study-Abroad', icon: Plane },
+  { name: 'Search', href: '/opportunities', icon: Search },
 ];
 
 export function Header() {

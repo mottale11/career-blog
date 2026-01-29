@@ -39,7 +39,7 @@ export type Opportunity = {
 };
 
 export type NavItem = {
-  name: Category | 'For You';
+  name: string;
   href: string;
   icon: LucideIcon;
 };
