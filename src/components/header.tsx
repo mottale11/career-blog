@@ -49,7 +49,6 @@ const navItems: NavItem[] = [
   },
   { name: 'Career Advice', href: '/opportunities/Career-Advice', icon: Lightbulb },
   { name: 'Study Abroad', href: '/opportunities/Study-Abroad', icon: Plane },
-  { name: 'Search', href: '/opportunities', icon: Search },
 ];
 
 export function Header() {
