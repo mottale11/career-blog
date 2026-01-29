@@ -116,10 +116,6 @@ export function Header() {
           <div className="hidden md:flex w-full max-w-sm">
             <SearchForm />
           </div>
-          <Button variant="ghost" size="icon">
-            <User className="h-5 w-5" />
-            <span className="sr-only">User Profile</span>
-          </Button>
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
               <Button
