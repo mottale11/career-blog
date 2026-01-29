@@ -11,7 +11,20 @@ import {
   Search,
   User,
   X,
+  ChevronDown,
 } from 'lucide-react';
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,7 +35,18 @@ import React from 'react';
 
 const navItems: NavItem[] = [
   { name: 'AI Job Finder', href: '/foryou', icon: User },
-  { name: 'Jobs', href: '/opportunities/Jobs', icon: Briefcase },
+  {
+    name: 'Jobs',
+    href: '/opportunities/Jobs',
+    icon: Briefcase,
+    children: [
+      { name: 'Entry Level Jobs', href: '/opportunities?category=Jobs&q=Entry+Level' },
+      { name: 'Mid Level Jobs', href: '/opportunities?category=Jobs&q=Mid+Level' },
+      { name: 'Senior Level Jobs', href: '/opportunities?category=Jobs&q=Senior+Level' },
+      { name: 'Remote Jobs', href: '/opportunities?category=Jobs&q=Remote' },
+      { name: 'Government Jobs', href: '/opportunities?category=Jobs&q=Government' },
+    ],
+  },
   { name: 'Career Advice', href: '/opportunities/Career-Advice', icon: Lightbulb },
   { name: 'Study Abroad', href: '/opportunities/Study-Abroad', icon: Plane },
   { name: 'Search', href: '/opportunities', icon: Search },
@@ -46,18 +70,46 @@ export function Header() {
 
         <div className="hidden md:flex flex-1 items-center space-x-4">
           <nav className="flex items-center space-x-6 text-sm font-medium">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={cn(
-                  'transition-colors hover:text-primary',
-                  pathname === item.href ? 'text-primary' : 'text-foreground/60'
-                )}
-              >
-                {item.name}
-              </Link>
-            ))}
+            {navItems.map((item) =>
+              item.children ? (
+                <DropdownMenu key={item.name}>
+                  <DropdownMenuTrigger
+                    className={cn(
+                      'flex items-center gap-1 transition-colors hover:text-primary focus:outline-none',
+                      pathname.startsWith(item.href)
+                        ? 'text-primary'
+                        : 'text-foreground/60'
+                    )}
+                  >
+                    {item.name}
+                    <ChevronDown className="h-4 w-4" />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem asChild>
+                       <Link href={item.href}>All Jobs</Link>
+                    </DropdownMenuItem>
+                    {item.children.map((child) => (
+                      <DropdownMenuItem key={child.name} asChild>
+                        <Link href={child.href}>{child.name}</Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={cn(
+                    'transition-colors hover:text-primary',
+                    pathname === item.href
+                      ? 'text-primary'
+                      : 'text-foreground/60'
+                  )}
+                >
+                  {item.name}
+                </Link>
+              )
+            )}
           </nav>
         </div>
         
@@ -100,19 +152,55 @@ export function Header() {
                   <ul className="space-y-2">
                     {navItems.map((item) => (
                       <li key={item.name}>
-                        <Link
-                          href={item.href}
-                          onClick={() => setIsSheetOpen(false)}
-                          className={cn(
-                            'flex items-center space-x-3 rounded-md px-3 py-2 text-base font-medium transition-colors',
-                            pathname === item.href
-                              ? 'bg-primary text-primary-foreground'
-                              : 'hover:bg-accent hover:text-accent-foreground'
-                          )}
-                        >
-                          <item.icon className="h-5 w-5" />
-                          <span>{item.name}</span>
-                        </Link>
+                        {!item.children ? (
+                          <Link
+                            href={item.href}
+                            onClick={() => setIsSheetOpen(false)}
+                            className={cn(
+                              'flex items-center space-x-3 rounded-md px-3 py-2 text-base font-medium transition-colors',
+                              pathname === item.href
+                                ? 'bg-primary text-primary-foreground'
+                                : 'hover:bg-accent hover:text-accent-foreground'
+                            )}
+                          >
+                            <item.icon className="h-5 w-5" />
+                            <span>{item.name}</span>
+                          </Link>
+                        ) : (
+                          <Collapsible>
+                            <CollapsibleTrigger className="flex w-full items-center justify-between rounded-md px-3 py-2 text-base font-medium transition-colors hover:bg-accent hover:text-accent-foreground">
+                              <div className="flex items-center space-x-3">
+                                <item.icon className="h-5 w-5" />
+                                <span>{item.name}</span>
+                              </div>
+                              <ChevronDown className="h-5 w-5 transition-transform data-[state=open]:rotate-180" />
+                            </CollapsibleTrigger>
+                            <CollapsibleContent>
+                              <ul className="pl-8 pt-2 space-y-1">
+                                <li>
+                                  <Link
+                                    href={item.href}
+                                    onClick={() => setIsSheetOpen(false)}
+                                    className="block rounded-md px-3 py-2 text-base font-medium hover:bg-accent hover:text-accent-foreground"
+                                  >
+                                    All Jobs
+                                  </Link>
+                                </li>
+                                {item.children.map((child) => (
+                                  <li key={child.name}>
+                                    <Link
+                                      href={child.href}
+                                      onClick={() => setIsSheetOpen(false)}
+                                      className="block rounded-md px-3 py-2 text-base font-medium hover:bg-accent hover:text-accent-foreground"
+                                    >
+                                      {child.name}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            </CollapsibleContent>
+                          </Collapsible>
+                        )}
                       </li>
                     ))}
                   </ul>

@@ -42,4 +42,8 @@ export type NavItem = {
   name: string;
   href: string;
   icon: LucideIcon;
+  children?: {
+    name: string;
+    href: string;
+  }[];
 };
