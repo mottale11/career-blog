@@ -28,7 +28,7 @@ import {
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import type { NavItem } from '@/lib/types';
 import React from 'react';
@@ -57,18 +57,15 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 max-w-7xl items-center">
-        <div className="mr-4 flex">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
+      <div className="container flex h-16 max-w-7xl items-center justify-between">
+        <div className="flex items-center gap-6">
+          <Link href="/" className="flex items-center space-x-2">
             <Compass className="h-6 w-6 text-primary" />
             <span className="hidden font-bold sm:inline-block font-headline">
               Career Compass
             </span>
           </Link>
-        </div>
-
-        <div className="hidden md:flex flex-1 items-center space-x-4">
-          <nav className="flex items-center space-x-6 text-sm font-medium">
+          <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
             {navItems.map((item) =>
               item.children ? (
                 <DropdownMenu key={item.name}>
@@ -112,97 +109,91 @@ export function Header() {
           </nav>
         </div>
         
-        <div className="flex flex-1 items-center justify-end space-x-4">
-          <div className="hidden md:flex w-full max-w-sm">
+        <div className="flex items-center gap-4">
+          <div className="hidden md:flex">
             <SearchForm />
           </div>
-          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-            <SheetTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="md:hidden"
-                aria-label="Open menu"
-              >
-                <Menu className="h-5 w-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left">
-              <div className="flex flex-col h-full">
-                <div className="flex items-center justify-between p-4 border-b">
-                   <Link href="/" className="flex items-center space-x-2" onClick={() => setIsSheetOpen(false)}>
-                    <Compass className="h-6 w-6 text-primary" />
-                    <span className="font-bold font-headline">Career Compass</span>
-                  </Link>
-                  <SheetTrigger asChild>
-                     <Button variant="ghost" size="icon" aria-label="Close menu">
-                      <X className="h-5 w-5" />
-                    </Button>
-                  </SheetTrigger>
-                </div>
-                <div className="p-4">
-                  <SearchForm />
-                </div>
-                <nav className="flex-1 px-4">
-                  <ul className="space-y-2">
-                    {navItems.map((item) => (
-                      <li key={item.name}>
-                        {!item.children ? (
-                          <Link
-                            href={item.href}
-                            onClick={() => setIsSheetOpen(false)}
-                            className={cn(
-                              'flex items-center space-x-3 rounded-md px-3 py-2 text-base font-medium transition-colors',
-                              pathname === item.href
-                                ? 'bg-primary text-primary-foreground'
-                                : 'hover:bg-accent hover:text-accent-foreground'
-                            )}
-                          >
-                            <item.icon className="h-5 w-5" />
-                            <span>{item.name}</span>
-                          </Link>
-                        ) : (
-                          <Collapsible>
-                            <CollapsibleTrigger className="flex w-full items-center justify-between rounded-md px-3 py-2 text-base font-medium transition-colors hover:bg-accent hover:text-accent-foreground">
-                              <div className="flex items-center space-x-3">
-                                <item.icon className="h-5 w-5" />
-                                <span>{item.name}</span>
-                              </div>
-                              <ChevronDown className="h-5 w-5 transition-transform data-[state=open]:rotate-180" />
-                            </CollapsibleTrigger>
-                            <CollapsibleContent>
-                              <ul className="pl-8 pt-2 space-y-1">
-                                <li>
-                                  <Link
-                                    href={item.href}
-                                    onClick={() => setIsSheetOpen(false)}
-                                    className="block rounded-md px-3 py-2 text-base font-medium hover:bg-accent hover:text-accent-foreground"
-                                  >
-                                    All Jobs
-                                  </Link>
-                                </li>
+          <div className="md:hidden">
+            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Open menu"
+                >
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="p-0">
+                <div className="flex h-full flex-col">
+                  <div className="flex items-center justify-between border-b p-4">
+                    <Link href="/" className="flex items-center space-x-2" onClick={() => setIsSheetOpen(false)}>
+                      <Compass className="h-6 w-6 text-primary" />
+                      <span className="font-bold font-headline">Career Compass</span>
+                    </Link>
+                    <SheetClose asChild>
+                       <Button variant="ghost" size="icon" aria-label="Close menu">
+                        <X className="h-5 w-5" />
+                      </Button>
+                    </SheetClose>
+                  </div>
+                  <div className="p-4">
+                    <SearchForm />
+                  </div>
+                  <nav className="flex-1 space-y-2 px-4">
+                      {navItems.map((item) => (
+                        <div key={item.name}>
+                          {!item.children ? (
+                            <Link
+                              href={item.href}
+                              onClick={() => setIsSheetOpen(false)}
+                              className={cn(
+                                'flex items-center space-x-3 rounded-md px-3 py-2 text-base font-medium transition-colors',
+                                pathname === item.href
+                                  ? 'bg-primary text-primary-foreground'
+                                  : 'hover:bg-accent hover:text-accent-foreground'
+                              )}
+                            >
+                              <item.icon className="h-5 w-5" />
+                              <span>{item.name}</span>
+                            </Link>
+                          ) : (
+                            <Collapsible>
+                              <CollapsibleTrigger className="flex w-full items-center justify-between rounded-md px-3 py-2 text-base font-medium transition-colors hover:bg-accent hover:text-accent-foreground">
+                                <div className="flex items-center space-x-3">
+                                  <item.icon className="h-5 w-5" />
+                                  <span>{item.name}</span>
+                                </div>
+                                <ChevronDown className="h-5 w-5 transition-transform data-[state=open]:rotate-180" />
+                              </CollapsibleTrigger>
+                              <CollapsibleContent className="space-y-1 pt-2 pl-11">
+                                <Link
+                                  href={item.href}
+                                  onClick={() => setIsSheetOpen(false)}
+                                  className="block rounded-md px-3 py-2 text-base font-medium hover:bg-accent hover:text-accent-foreground"
+                                >
+                                  All Jobs
+                                </Link>
                                 {item.children.map((child) => (
-                                  <li key={child.name}>
                                     <Link
+                                      key={child.name}
                                       href={child.href}
                                       onClick={() => setIsSheetOpen(false)}
                                       className="block rounded-md px-3 py-2 text-base font-medium hover:bg-accent hover:text-accent-foreground"
                                     >
                                       {child.name}
                                     </Link>
-                                  </li>
                                 ))}
-                              </ul>
-                            </CollapsibleContent>
-                          </Collapsible>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </nav>
-              </div>
-            </SheetContent>
-          </Sheet>
+                              </CollapsibleContent>
+                            </Collapsible>
+                          )}
+                        </div>
+                      ))}
+                  </nav>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </div>
     </header>
@@ -218,6 +209,7 @@ function SearchForm() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const query = formData.get('q') as string;
+    
     if (query) {
       router.push(`/opportunities?q=${query}`);
     } else {
