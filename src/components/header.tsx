@@ -27,7 +27,7 @@ import {
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import type { NavItem } from '@/lib/types';
 import React from 'react';
@@ -125,6 +125,10 @@ export function Header() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="p-0">
+                <SheetHeader className="sr-only">
+                  <SheetTitle>Menu</SheetTitle>
+                  <SheetDescription>A list of navigation links for the site.</SheetDescription>
+                </SheetHeader>
                 <div className="flex h-full flex-col">
                   <div className="flex items-center justify-between border-b p-4">
                     <Link href="/" className="flex items-center space-x-2" onClick={() => setIsSheetOpen(false)}>
