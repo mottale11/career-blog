@@ -1,7 +1,7 @@
 'use client';
 
 import { SidebarProvider, Sidebar, SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
-import { LayoutDashboard, Newspaper, Tags } from "lucide-react";
+import { LayoutDashboard, Newspaper, Tags, History } from "lucide-react";
 import Link from "next/link";
 import { LogoIcon } from "@/components/logo-icon";
 import { usePathname } from "next/navigation";
@@ -47,6 +47,14 @@ export default function AdminLayout({
                             <Link href="/admin/taxonomies">
                                 <Tags />
                                 <span>Categories & Tags</span>
+                            </Link>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton asChild isActive={pathname.startsWith('/admin/status')} tooltip="Status">
+                            <Link href="/admin/status">
+                                <History />
+                                <span>Status</span>
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
