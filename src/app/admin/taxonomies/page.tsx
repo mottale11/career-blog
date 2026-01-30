@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/tabs';
 import { categories } from '@/lib/data';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 export default function TaxonomiesPage() {
   // In a real app, you would also fetch tags. For this prototype, we'll just use categories.
@@ -40,11 +41,14 @@ export default function TaxonomiesPage() {
         </TabsList>
         <TabsContent value="categories">
           <Card>
-            <CardHeader>
-              <CardTitle>Categories</CardTitle>
-              <CardDescription>
-                Manage the opportunity categories for your site.
-              </CardDescription>
+            <CardHeader className="flex-row items-center justify-between">
+              <div>
+                <CardTitle>Categories</CardTitle>
+                <CardDescription>
+                  Manage the opportunity categories for your site.
+                </CardDescription>
+              </div>
+              <Button onClick={() => alert('Add category functionality not implemented in prototype.')}>Add Category</Button>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex flex-wrap gap-2">
@@ -62,11 +66,14 @@ export default function TaxonomiesPage() {
         </TabsContent>
         <TabsContent value="tags">
           <Card>
-            <CardHeader>
-              <CardTitle>Tags</CardTitle>
-              <CardDescription>
-                Manage the tags used across your opportunities.
-              </CardDescription>
+            <CardHeader className="flex-row items-center justify-between">
+              <div>
+                <CardTitle>Tags</CardTitle>
+                <CardDescription>
+                  Manage the tags used across your opportunities.
+                </CardDescription>
+              </div>
+              <Button onClick={() => alert('Add tag functionality not implemented in prototype.')}>Add Tag</Button>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex flex-wrap gap-2">
