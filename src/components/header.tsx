@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import {
   Briefcase,
-  Compass,
   Lightbulb,
   Menu,
   Plane,
@@ -32,6 +31,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/s
 import { cn } from '@/lib/utils';
 import type { NavItem } from '@/lib/types';
 import React from 'react';
+import { LogoIcon } from './logo-icon';
 
 const navItems: NavItem[] = [
   { name: 'AI Job Finder', href: '/foryou', icon: User },
@@ -60,7 +60,7 @@ export function Header() {
       <div className="container flex h-16 max-w-7xl items-center justify-between">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center space-x-2">
-            <Compass className="h-6 w-6 text-primary" />
+            <LogoIcon className="h-8 w-8" />
             <span className="hidden font-bold sm:inline-block font-headline">
               Career Compass
             </span>
@@ -128,7 +128,7 @@ export function Header() {
                 <div className="flex h-full flex-col">
                   <div className="flex items-center justify-between border-b p-4">
                     <Link href="/" className="flex items-center space-x-2" onClick={() => setIsSheetOpen(false)}>
-                      <Compass className="h-6 w-6 text-primary" />
+                      <LogoIcon className="h-8 w-8" />
                       <span className="font-bold font-headline">Career Compass</span>
                     </Link>
                     <SheetClose asChild>

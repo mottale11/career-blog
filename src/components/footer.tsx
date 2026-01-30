@@ -1,5 +1,6 @@
-import { Compass, Linkedin, Twitter, Facebook } from 'lucide-react';
+import { Linkedin, Twitter, Facebook } from 'lucide-react';
 import Link from 'next/link';
+import { LogoIcon } from './logo-icon';
 
 export function Footer() {
   return (
@@ -7,7 +8,7 @@ export function Footer() {
       <div className="container mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
           <div className="flex items-center space-x-2">
-            <Compass className="h-6 w-6 text-primary" />
+            <LogoIcon className="h-8 w-8" />
             <span className="font-bold font-headline">Career Compass</span>
           </div>
           <p className="text-sm text-muted-foreground">
