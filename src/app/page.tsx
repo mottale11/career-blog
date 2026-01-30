@@ -20,7 +20,7 @@ export default async function Home() {
           className="mt-12"
         />
         <OpportunityListSection
-          title="Trending Now"
+          title="Hiring Now"
           opportunities={trendingOpportunities}
           className="mt-12"
         />
