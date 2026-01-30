@@ -19,6 +19,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { formatDate } from "@/lib/utils";
 
 export default async function AdminOpportunitiesPage() {
   const opportunities = await getOpportunities();
@@ -27,7 +28,9 @@ export default async function AdminOpportunitiesPage() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold font-headline">Manage Opportunities</h2>
-        <Button>Add New Opportunity</Button>
+        <Button asChild>
+          <Link href="/admin/opportunities/new">Add New Opportunity</Link>
+        </Button>
       </div>
       <div className="border rounded-lg bg-card">
         <Table>
@@ -35,8 +38,9 @@ export default async function AdminOpportunitiesPage() {
             <TableRow>
               <TableHead>Title</TableHead>
               <TableHead>Category</TableHead>
-              <TableHead>Organization</TableHead>
-              <TableHead className="hidden md:table-cell">Status</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="hidden md:table-cell">Deadline</TableHead>
+              <TableHead className="hidden md:table-cell">Flags</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -51,11 +55,18 @@ export default async function AdminOpportunitiesPage() {
                 <TableCell>
                   <Badge variant="secondary">{opportunity.category}</Badge>
                 </TableCell>
-                <TableCell>{opportunity.organization}</TableCell>
+                <TableCell>
+                   <Badge variant={opportunity.status === 'published' ? 'default': 'outline'}>
+                    {opportunity.status}
+                   </Badge>
+                </TableCell>
+                 <TableCell className="hidden md:table-cell">
+                  {formatDate(opportunity.deadline)}
+                </TableCell>
                 <TableCell className="hidden md:table-cell">
                     <div className="flex items-center gap-2">
                         {opportunity.featured && <Badge>Featured</Badge>}
-                        {opportunity.trending && <Badge variant="outline">Trending</Badge>}
+                        {opportunity.trending && <Badge variant="outline">Hiring</Badge>}
                     </div>
                 </TableCell>
                 <TableCell className="text-right">
@@ -68,10 +79,17 @@ export default async function AdminOpportunitiesPage() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuItem>Edit</DropdownMenuItem>
-                      <DropdownMenuItem>View Details</DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href={`/admin/opportunities/edit/${opportunity.id}`}>Edit</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href={`/opportunity/${opportunity.slug}`} target="_blank">View</Link>
+                      </DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem className="text-destructive focus:text-destructive-foreground focus:bg-destructive">
+                      <DropdownMenuItem 
+                        className="text-destructive focus:text-destructive-foreground focus:bg-destructive"
+                        onClick={() => alert('Delete functionality not implemented in prototype.')}
+                      >
                         Delete
                       </DropdownMenuItem>
                     </DropdownMenuContent>

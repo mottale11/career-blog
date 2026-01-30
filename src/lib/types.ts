@@ -16,6 +16,8 @@ export type Level =
   | 'Professional'
   | 'All Levels';
 
+export type OpportunityStatus = 'published' | 'draft';
+
 export type Opportunity = {
   id: string;
   slug: string;
@@ -37,6 +39,9 @@ export type Opportunity = {
   image: string;
   imageHint: string;
   tags: string[];
+  status: OpportunityStatus;
+  metaTitle?: string;
+  metaDescription?: string;
 };
 
 export type NavItem = {

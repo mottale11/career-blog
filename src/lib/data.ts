@@ -27,6 +27,9 @@ const opportunities: Omit<Opportunity, 'slug'>[] = [{
     image: 'https://picsum.photos/seed/1/600/400',
     imageHint: 'tech office',
     tags: ['Software Engineering', 'Internship', 'Google', 'USA', 'Tech'],
+    status: 'published',
+    metaTitle: 'Google Software Engineering Internship | Jobsyde',
+    metaDescription: 'Apply for the Google Software Engineering Internship. A 12-week paid internship for students to work on impactful projects in software development and more.',
   },
   {
     id: '2',
@@ -48,6 +51,9 @@ const opportunities: Omit<Opportunity, 'slug'>[] = [{
     image: 'https://picsum.photos/seed/2/600/400',
     imageHint: 'university campus',
     tags: ['Scholarship', 'Postgraduate', 'Oxford University', 'UK', 'Academia'],
+    status: 'published',
+    metaTitle: 'Rhodes Scholarship at Oxford University | Jobsyde',
+    metaDescription: 'Apply for the prestigious Rhodes Scholarship to study at the University of Oxford. A postgraduate award for exceptional students worldwide.',
   },
   {
     id: '3',
@@ -69,6 +75,9 @@ const opportunities: Omit<Opportunity, 'slug'>[] = [{
     image: 'https://picsum.photos/seed/3/600/400',
     imageHint: 'data visualization',
     tags: ['Data Science', 'Jobs', 'Meta', 'USA', 'Professional'],
+    status: 'published',
+    metaTitle: 'Data Scientist at Meta | Jobsyde',
+    metaDescription: 'Join Meta as an experienced Data Scientist. Lead data-driven initiatives and drive product strategy in Menlo Park, CA.',
   },
   {
     id: '4',
@@ -90,6 +99,9 @@ const opportunities: Omit<Opportunity, 'slug'>[] = [{
     image: 'https://picsum.photos/seed/4/600/400',
     imageHint: 'diverse students',
     tags: ['Fellowship', 'Graduate', 'Research', 'USA', 'International'],
+    status: 'published',
+    metaTitle: 'Fulbright Foreign Student Program in the USA | Jobsyde',
+    metaDescription: 'Study and conduct research in the United States with the Fulbright Foreign Student Program for graduate students and young professionals.',
   },
   {
     id: '5',
@@ -111,6 +123,9 @@ const opportunities: Omit<Opportunity, 'slug'>[] = [{
     image: 'https://picsum.photos/seed/5/600/400',
     imageHint: 'wildlife photography',
     tags: ['Grant', 'Early Career', 'Research', 'Conservation', 'Global'],
+    status: 'published',
+    metaTitle: 'National Geographic Early Career Grant | Jobsyde',
+    metaDescription: 'Lead a bold and innovative project with funding from the National Geographic Early Career Grant. Open to less experienced individuals worldwide.',
   },
   {
     id: '6',
@@ -132,6 +147,9 @@ const opportunities: Omit<Opportunity, 'slug'>[] = [{
     image: 'https://picsum.photos/seed/6/600/400',
     imageHint: 'team meeting',
     tags: ['Career Advice', 'Soft Skills', 'Communication', 'Professional Development'],
+    status: 'published',
+    metaTitle: 'Effective Communication in the Workplace | Jobsyde',
+    metaDescription: 'Master workplace communication with our guide on active listening, feedback, and navigating difficult conversations to advance your career.',
   },
   {
     id: '7',
@@ -153,6 +171,9 @@ const opportunities: Omit<Opportunity, 'slug'>[] = [{
     image: 'https://picsum.photos/seed/7/600/400',
     imageHint: 'Sydney opera',
     tags: ['Study Abroad', 'Australia', 'Education', 'Student Guide'],
+    status: 'published',
+    metaTitle: 'Study in Australia: A Comprehensive Guide | Jobsyde',
+    metaDescription: 'Your complete guide to studying in Australia. Learn about universities, visas, scholarships, and student life down under.',
   },
   {
     id: '8',
@@ -174,6 +195,9 @@ const opportunities: Omit<Opportunity, 'slug'>[] = [{
     image: 'https://picsum.photos/seed/8/600/400',
     imageHint: 'marketing chart',
     tags: ['Marketing', 'Internship', 'HubSpot', 'Ireland', 'Digital Marketing'],
+    status: 'published',
+    metaTitle: 'Marketing Internship at HubSpot in Dublin | Jobsyde',
+    metaDescription: 'Gain hands-on inbound marketing experience with a summer internship at HubSpot. Apply now for this undergraduate opportunity in Dublin.',
   },
 ];
 
@@ -184,14 +208,17 @@ const opportunitiesWithSlugs: Opportunity[] = opportunities.map(opportunity => (
 
 
 export async function getOpportunities(category ? : Category) {
-  if (category) {
-    return opportunitiesWithSlugs.filter(o => o.category === category);
-  }
-  return opportunitiesWithSlugs;
+  // In a real app, you'd fetch this from a database.
+  // The sorting here is to simulate fetching latest posts first.
+  return opportunitiesWithSlugs.sort((a, b) => new Date(b.deadline).getTime() - new Date(a.deadline).getTime());
 }
 
 export async function getOpportunityBySlug(slug: string) {
   return opportunitiesWithSlugs.find(o => o.slug === slug);
+}
+
+export async function getOpportunityById(id: string) {
+  return opportunitiesWithSlugs.find(o => o.id === id);
 }
 
 export const categories: {
