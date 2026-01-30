@@ -7,7 +7,7 @@ import type {
   Level
 } from './types';
 
-const opportunities: Opportunity[] = [{
+const opportunities: Omit<Opportunity, 'slug'>[] = [{
     id: '1',
     title: 'Google Software Engineering Internship',
     category: 'Internships',
@@ -26,6 +26,7 @@ const opportunities: Opportunity[] = [{
     trending: true,
     image: 'https://picsum.photos/seed/1/600/400',
     imageHint: 'tech office',
+    tags: ['Software Engineering', 'Internship', 'Google', 'USA', 'Tech'],
   },
   {
     id: '2',
@@ -46,6 +47,7 @@ const opportunities: Opportunity[] = [{
     trending: false,
     image: 'https://picsum.photos/seed/2/600/400',
     imageHint: 'university campus',
+    tags: ['Scholarship', 'Postgraduate', 'Oxford University', 'UK', 'Academia'],
   },
   {
     id: '3',
@@ -66,6 +68,7 @@ const opportunities: Opportunity[] = [{
     trending: true,
     image: 'https://picsum.photos/seed/3/600/400',
     imageHint: 'data visualization',
+    tags: ['Data Science', 'Jobs', 'Meta', 'USA', 'Professional'],
   },
   {
     id: '4',
@@ -86,6 +89,7 @@ const opportunities: Opportunity[] = [{
     trending: true,
     image: 'https://picsum.photos/seed/4/600/400',
     imageHint: 'diverse students',
+    tags: ['Fellowship', 'Graduate', 'Research', 'USA', 'International'],
   },
   {
     id: '5',
@@ -106,6 +110,7 @@ const opportunities: Opportunity[] = [{
     trending: false,
     image: 'https://picsum.photos/seed/5/600/400',
     imageHint: 'wildlife photography',
+    tags: ['Grant', 'Early Career', 'Research', 'Conservation', 'Global'],
   },
   {
     id: '6',
@@ -126,6 +131,7 @@ const opportunities: Opportunity[] = [{
     trending: false,
     image: 'https://picsum.photos/seed/6/600/400',
     imageHint: 'team meeting',
+    tags: ['Career Advice', 'Soft Skills', 'Communication', 'Professional Development'],
   },
   {
     id: '7',
@@ -146,6 +152,7 @@ const opportunities: Opportunity[] = [{
     trending: false,
     image: 'https://picsum.photos/seed/7/600/400',
     imageHint: 'Sydney opera',
+    tags: ['Study Abroad', 'Australia', 'Education', 'Student Guide'],
   },
   {
     id: '8',
@@ -166,10 +173,11 @@ const opportunities: Opportunity[] = [{
     trending: true,
     image: 'https://picsum.photos/seed/8/600/400',
     imageHint: 'marketing chart',
+    tags: ['Marketing', 'Internship', 'HubSpot', 'Ireland', 'Digital Marketing'],
   },
 ];
 
-const opportunitiesWithSlugs = opportunities.map(opportunity => ({
+const opportunitiesWithSlugs: Opportunity[] = opportunities.map(opportunity => ({
   ...opportunity,
   slug: slugify(opportunity.title),
 }));

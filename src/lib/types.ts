@@ -36,6 +36,7 @@ export type Opportunity = {
   trending: boolean;
   image: string;
   imageHint: string;
+  tags: string[];
 };
 
 export type NavItem = {

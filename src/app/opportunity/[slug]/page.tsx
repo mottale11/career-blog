@@ -119,6 +119,21 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
                )}
 
             </div>
+            
+            {opportunity.tags && opportunity.tags.length > 0 && (
+                <div className="mt-8 pt-8 border-t">
+                  <h3 className="font-headline text-xl font-bold mb-4">
+                    Related Tags
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {opportunity.tags.map((tag) => (
+                      <Badge key={tag} variant="secondary">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+            )}
           </article>
         </div>
 
