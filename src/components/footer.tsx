@@ -30,7 +30,6 @@ export function Footer() {
               <li><Link href="/opportunities/Scholarships" className="text-muted-foreground hover:text-primary">Scholarships</Link></li>
               <li><Link href="/opportunities/Internships" className="text-muted-foreground hover:text-primary">Internships</Link></li>
               <li><Link href="/opportunities/Fellowships" className="text-muted-foreground hover:text-primary">Fellowships & Grants</Link></li>
-              <li><Link href="/opportunities/Career-Advice" className="text-muted-foreground hover:text-primary">Career Advice</Link></li>
               <li><Link href="/opportunities/Study-Abroad" className="text-muted-foreground hover:text-primary">Study Abroad</Link></li>
               <li><Link href="#" className="text-muted-foreground hover:text-primary">About Us</Link></li>
               <li><Link href="#" className="text-muted-foreground hover:text-primary">Contact Us</Link></li>
@@ -52,7 +51,6 @@ export function Footer() {
               Resources
             </h3>
             <ul className="mt-4 space-y-2 text-sm">
-              <li><Link href="/opportunities/Career-Advice" className="text-muted-foreground hover:text-primary">Career Guides</Link></li>
               <li><Link href="/opportunities/Study-Abroad" className="text-muted-foreground hover:text-primary">Study Abroad Guides</Link></li>
             </ul>
           </div>
