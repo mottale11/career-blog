@@ -6,7 +6,7 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 
 export const metadata: Metadata = {
-  title: 'Career Compass',
+  title: 'Jobsyde',
   description:
     'Your guide to Jobs, Scholarships, Internships, Fellowships, Grants, and Career Development Opportunities.',
 };

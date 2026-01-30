@@ -2,7 +2,7 @@ import { getOpportunities } from "@/lib/data";
 import { PersonalizedRecommendations } from "@/components/personalized-recommendations";
 
 export const metadata = {
-  title: "Personalized Recommendations | Career Compass",
+  title: "Personalized Recommendations | Jobsyde",
   description: "Get personalized opportunity recommendations based on your profile.",
 };
 

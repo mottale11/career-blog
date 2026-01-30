@@ -111,7 +111,7 @@ const opportunities: Opportunity[] = [{
     id: '6',
     title: 'Effective Communication in the Workplace',
     category: 'Career Advice',
-    organization: 'Career Compass',
+    organization: 'Jobsyde',
     location: 'Online',
     country: 'Global',
     level: 'All Levels',

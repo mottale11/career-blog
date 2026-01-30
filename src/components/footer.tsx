@@ -9,10 +9,10 @@ export function Footer() {
         <div className="flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
           <div className="flex items-center space-x-2">
             <LogoIcon className="h-8 w-8" />
-            <span className="font-bold font-headline">Career Compass</span>
+            <span className="font-bold font-headline">Jobsyde</span>
           </div>
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Career Compass. All rights reserved.
+            © {new Date().getFullYear()} Jobsyde. All rights reserved.
           </p>
           <div className="flex items-center space-x-4">
             <Link href="#" className="text-muted-foreground hover:text-primary">

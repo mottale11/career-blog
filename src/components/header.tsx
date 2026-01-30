@@ -62,7 +62,7 @@ export function Header() {
           <Link href="/" className="flex items-center space-x-2">
             <LogoIcon className="h-8 w-8" />
             <span className="hidden font-bold sm:inline-block font-headline">
-              Career Compass
+              Jobsyde
             </span>
           </Link>
           <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
@@ -129,7 +129,7 @@ export function Header() {
                   <div className="flex items-center justify-between border-b p-4">
                     <Link href="/" className="flex items-center space-x-2" onClick={() => setIsSheetOpen(false)}>
                       <LogoIcon className="h-8 w-8" />
-                      <span className="font-bold font-headline">Career Compass</span>
+                      <span className="font-bold font-headline">Jobsyde</span>
                     </Link>
                     <SheetClose asChild>
                        <Button variant="ghost" size="icon" aria-label="Close menu">
