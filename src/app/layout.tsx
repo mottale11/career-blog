@@ -3,6 +3,7 @@ import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import { ConditionalLayout } from '@/components/conditional-layout';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://jobsyde.com'),
@@ -41,6 +42,19 @@ export default function RootLayout({
           'min-h-screen bg-background font-body antialiased flex flex-col'
         )}
       >
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-YEJ7E7K9LC"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-YEJ7E7K9LC');
+          `}
+        </Script>
         <ConditionalLayout>{children}</ConditionalLayout>
         <Toaster />
       </body>
