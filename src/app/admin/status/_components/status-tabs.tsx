@@ -9,20 +9,11 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { MoreHorizontal } from "lucide-react";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
-    DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
 import { Opportunity } from "@/lib/types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
+import { OpportunityActions } from "../../opportunities/_components/opportunity-actions";
 
 function OpportunitiesTable({ opportunities }: { opportunities: Opportunity[] }) {
     if (opportunities.length === 0) {
@@ -75,30 +66,7 @@ function OpportunitiesTable({ opportunities }: { opportunities: Opportunity[] })
                                 </div>
                             </TableCell>
                             <TableCell className="text-right">
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" className="h-8 w-8 p-0">
-                                            <span className="sr-only">Open menu</span>
-                                            <MoreHorizontal className="h-4 w-4" />
-                                        </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end">
-                                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                        <DropdownMenuItem asChild>
-                                            <Link href={`/admin/opportunities/edit/${opportunity.id}`}>Edit</Link>
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem asChild>
-                                            <Link href={`/opportunity/${opportunity.slug}`} target="_blank">View</Link>
-                                        </DropdownMenuItem>
-                                        <DropdownMenuSeparator />
-                                        <DropdownMenuItem
-                                            className="text-destructive focus:text-destructive-foreground focus:bg-destructive"
-                                            onClick={() => alert('Delete functionality not implemented in prototype.')}
-                                        >
-                                            Delete
-                                        </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
+                                <OpportunityActions opportunity={opportunity} />
                             </TableCell>
                         </TableRow>
                     ))}

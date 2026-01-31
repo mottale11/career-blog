@@ -5,9 +5,19 @@ import { Toaster } from '@/components/ui/toaster';
 import { ConditionalLayout } from '@/components/conditional-layout';
 
 export const metadata: Metadata = {
-  title: 'Jobsyde',
+  metadataBase: new URL('https://jobsyde.com'),
+  title: {
+    default: 'Jobsyde',
+    template: '%s | Jobsyde',
+  },
   description:
     'Your guide to Jobs, Scholarships, Internships, Fellowships, Grants, and Career Development Opportunities.',
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://jobsyde.com',
+    siteName: 'Jobsyde',
+  },
 };
 
 export default function RootLayout({

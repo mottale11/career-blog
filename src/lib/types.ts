@@ -40,6 +40,7 @@ export type Opportunity = {
   imageHint: string;
   tags: string[];
   status: OpportunityStatus;
+  created_at?: string;
   metaTitle?: string;
   metaDescription?: string;
 };

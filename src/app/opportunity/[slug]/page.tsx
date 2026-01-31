@@ -32,9 +32,9 @@ import {
 } from "@/components/ui/carousel";
 
 type OpportunityPageProps = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 export async function generateStaticParams() {
@@ -45,7 +45,8 @@ export async function generateStaticParams() {
 }
 
 export default async function OpportunityPage({ params }: OpportunityPageProps) {
-  const opportunity = await getOpportunityBySlug(params.slug);
+  const resolvedParams = await params;
+  const opportunity = await getOpportunityBySlug(resolvedParams.slug);
 
   if (!opportunity) {
     notFound();
@@ -76,7 +77,7 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
             <h1 className="font-headline text-3xl md:text-4xl font-extrabold tracking-tight mb-4">
               {opportunity.title}
             </h1>
-            
+
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-muted-foreground mb-6">
               <div className="flex items-center gap-2">
                 <Building className="w-4 h-4" />
@@ -86,18 +87,49 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
                 <MapPin className="w-4 h-4" />
                 <span>{opportunity.location}</span>
               </div>
-               <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <Globe className="w-4 h-4" />
                 <span>{opportunity.country}</span>
               </div>
-               <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <GraduationCap className="w-4 h-4" />
                 <span>{opportunity.level}</span>
               </div>
             </div>
 
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  '@context': 'https://schema.org',
+                  '@type': 'JobPosting',
+                  title: opportunity.title,
+                  description: opportunity.description,
+                  identifier: {
+                    '@type': 'PropertyValue',
+                    name: opportunity.organization,
+                    value: opportunity.id,
+                  },
+                  datePosted: opportunity.created_at,
+                  validThrough: opportunity.deadline,
+                  hiringOrganization: {
+                    '@type': 'Organization',
+                    name: opportunity.organization,
+                  },
+                  jobLocation: {
+                    '@type': 'Place',
+                    address: {
+                      '@type': 'PostalAddress',
+                      addressLocality: opportunity.location,
+                      addressCountry: opportunity.country,
+                    },
+                  },
+                }),
+              }}
+            />
+
             <Separator className="my-8" />
-            
+
             <OpportunitySummary description={opportunity.description} />
 
             <div className="prose max-w-none mt-8">
@@ -122,29 +154,29 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
                   </ul>
                 </>
               )}
-              
-               {opportunity.applicationProcess && (
+
+              {opportunity.applicationProcess && (
                 <>
                   <h2 className="font-headline text-2xl font-bold mt-8">Application Process</h2>
                   <p>{opportunity.applicationProcess}</p>
                 </>
-               )}
+              )}
 
             </div>
-            
+
             {opportunity.tags && opportunity.tags.length > 0 && (
-                <div className="mt-8 pt-8 border-t">
-                  <h3 className="font-headline text-xl font-bold mb-4">
-                    Related Tags
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {opportunity.tags.map((tag) => (
-                      <Badge key={tag} variant="secondary">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
+              <div className="mt-8 pt-8 border-t">
+                <h3 className="font-headline text-xl font-bold mb-4">
+                  Related Tags
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {opportunity.tags.map((tag) => (
+                    <Badge key={tag} variant="secondary">
+                      {tag}
+                    </Badge>
+                  ))}
                 </div>
+              </div>
             )}
           </article>
         </div>
@@ -182,7 +214,7 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                 <Button variant="outline" className="w-full">
+                <Button variant="outline" className="w-full">
                   <Share2 className="w-4 h-4 mr-2" /> Share
                 </Button>
               </CardContent>

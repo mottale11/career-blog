@@ -6,9 +6,9 @@ import { categories } from '@/lib/data';
 import { notFound } from 'next/navigation';
 
 type CategoryPageProps = {
-  params: {
+  params: Promise<{
     category: string;
-  };
+  }>;
 };
 
 export async function generateStaticParams() {
@@ -18,8 +18,9 @@ export async function generateStaticParams() {
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
+  const resolvedParams = await params;
   const categoryName = categories.find(
-    (c) => slugify(c.name) === params.category
+    (c) => slugify(c.name) === resolvedParams.category
   )?.name;
 
   if (!categoryName) {
@@ -27,7 +28,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   }
 
   const opportunities = await getOpportunities(categoryName);
-  
+
   return (
     <div>
       <h1 className="text-4xl font-bold font-headline mb-8">{categoryName}</h1>

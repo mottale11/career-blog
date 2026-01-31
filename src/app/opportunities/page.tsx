@@ -10,17 +10,19 @@ type SearchParams = {
   level?: string;
 };
 
-export default function OpportunitiesPage({
+export default async function OpportunitiesPage({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 }) {
+  const resolvedSearchParams = await searchParams;
+
   return (
     <div className="flex flex-col md:flex-row gap-8">
       <FilterSidebar />
       <div className="w-full">
         <Suspense fallback={<OpportunityGridSkeleton />}>
-          <OpportunityGrid searchParams={searchParams} />
+          <OpportunityGrid searchParams={resolvedSearchParams} />
         </Suspense>
       </div>
     </div>
@@ -51,7 +53,7 @@ async function OpportunityGrid({ searchParams }: { searchParams: SearchParams })
   const title = searchParams.q
     ? `Search results for "${searchParams.q}"`
     : 'All Opportunities';
-  
+
   return (
     <div>
       <h1 className="text-3xl font-bold font-headline mb-6">{title}</h1>
@@ -90,8 +92,8 @@ function OpportunityGridSkeleton() {
               </div>
             </div>
             <div className="px-6 pb-4 border-t pt-4 flex justify-between items-center">
-               <div className="h-4 w-1/3 bg-muted rounded animate-pulse" />
-               <div className="h-8 w-1/4 bg-muted rounded animate-pulse" />
+              <div className="h-4 w-1/3 bg-muted rounded animate-pulse" />
+              <div className="h-8 w-1/4 bg-muted rounded animate-pulse" />
             </div>
           </div>
         ))}
