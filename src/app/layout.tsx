@@ -19,6 +19,9 @@ export const metadata: Metadata = {
     url: 'https://jobsyde.com',
     siteName: 'Jobsyde',
   },
+  verification: {
+    google: '46Cid1mY9s4RHwjPmEBokhdo0OmM3Dv0teaqesQpgJw',
+  },
 };
 
 export default function RootLayout({
