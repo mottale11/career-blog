@@ -46,8 +46,8 @@ import { slugify } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { uploadImage } from '@/lib/storage';
 
-const countries = ['USA', 'UK', 'Australia', 'Ireland', 'Global'];
-const levels: Level[] = ['Undergraduate', 'Graduate', 'Postgraduate', 'Professional', 'All Levels'];
+const countries = ['Kenya', 'Uganda', 'Tanzania', 'Rwanda', 'Ethiopia', 'South Africa', 'Nigeria', 'Ghana', 'USA', 'UK', 'Australia', 'Ireland', 'Global'];
+const levels: Level[] = ['Undergraduate', 'Graduate', 'Postgraduate', 'Professional', 'Internship', 'All Levels'];
 
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
 

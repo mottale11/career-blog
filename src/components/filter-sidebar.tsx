@@ -10,8 +10,8 @@ import {
   SelectValue,
 } from './ui/select';
 
-const countries = ['USA', 'UK', 'Australia', 'Ireland', 'Global'];
-const levels = ['Undergraduate', 'Graduate', 'Postgraduate', 'Professional', 'All Levels'];
+const countries = ['Kenya', 'Uganda', 'Tanzania', 'Rwanda', 'Ethiopia', 'South Africa', 'Nigeria', 'Ghana', 'USA', 'UK', 'Australia', 'Ireland', 'Global'];
+const levels = ['Undergraduate', 'Graduate', 'Postgraduate', 'Professional', 'Internship', 'All Levels'];
 
 export function FilterSidebar() {
   const router = useRouter();
@@ -26,22 +26,22 @@ export function FilterSidebar() {
     } else {
       current.delete(type);
     }
-    
+
     const search = current.toString();
     const query = search ? `?${search}` : '';
 
     router.push(`${pathname}${query}`);
   };
-  
+
   const handleReset = () => {
-     router.push(pathname);
+    router.push(pathname);
   }
 
   return (
     <aside className="w-full md:w-64 lg:w-72 flex-shrink-0">
       <div className="sticky top-24 space-y-6">
         <h2 className="text-xl font-bold font-headline">Filters</h2>
-        
+
         <div className="space-y-2">
           <label className="text-sm font-medium">Country</label>
           <Select
@@ -81,7 +81,7 @@ export function FilterSidebar() {
             </SelectContent>
           </Select>
         </div>
-        
+
         <Button variant="ghost" className="w-full" onClick={handleReset}>
           Reset Filters
         </Button>

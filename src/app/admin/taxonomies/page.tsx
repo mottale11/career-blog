@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { createCategory, getCategories, deleteCategory, type Category } from '@/lib/categories';
+import { getTags, deleteTag } from '@/lib/tags';
 import { Loader2, Trash2 } from 'lucide-react';
 
 export default function TaxonomiesPage() {
@@ -45,6 +46,7 @@ export default function TaxonomiesPage() {
   const [newCategoryName, setNewCategoryName] = useState('');
   const [selectedParentId, setSelectedParentId] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [tags, setTags] = useState<{ name: string, count: number }[]>([]);
   const { toast } = useToast();
 
   const fetchCategories = async () => {
@@ -64,8 +66,18 @@ export default function TaxonomiesPage() {
     }
   };
 
+  const fetchTags = async () => {
+    try {
+      const data = await getTags();
+      setTags(data);
+    } catch (error) {
+      console.error("Failed to fetch tags", error);
+    }
+  };
+
   useEffect(() => {
     fetchCategories();
+    fetchTags();
   }, []);
 
   const handleCreateCategory = async (e: React.FormEvent) => {
@@ -113,6 +125,17 @@ export default function TaxonomiesPage() {
       toast({ title: "Error", description: "Failed to delete category.", variant: "destructive" });
     }
   }
+
+  const handleDeleteTag = async (tagName: string) => {
+    if (!confirm(`Are you sure you want to delete the tag "${tagName}"? This will remove it from all opportunities.`)) return;
+    try {
+      await deleteTag(tagName);
+      toast({ title: "Deleted", description: "Tag removed from opportunities." });
+      fetchTags();
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to delete tag.", variant: "destructive" });
+    }
+  };
 
   // Helper to render categories with indentation for hierarchy
   // Since fetching returns a flat list (for now), we can just filter for display
@@ -230,13 +253,28 @@ export default function TaxonomiesPage() {
               <div>
                 <CardTitle>Tags</CardTitle>
                 <CardDescription>
-                  Manage the tags used across your opportunities.
+                  Tags are automatically generated from your opportunities. Deleting a tag removes it from all posts.
                 </CardDescription>
               </div>
-              <Button onClick={() => alert('Add tag functionality not implemented in prototype.')}>Add Tag</Button>
+              <Button disabled variant="secondary" title="Tags are created by adding them to opportunities.">
+                Auto-Generated
+              </Button>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-muted-foreground">Tags functionality coming soon.</p>
+            <CardContent>
+              {tags.length === 0 ? (
+                <p className="text-muted-foreground text-center py-4">No tags found used in opportunities.</p>
+              ) : (
+                <div className="flex flex-wrap gap-2">
+                  {tags.map(tag => (
+                    <Badge key={tag.name} variant="secondary" className="px-3 py-1 flex items-center gap-2 text-sm">
+                      {tag.name} <span className="text-xs opacity-50">({tag.count})</span>
+                      <button onClick={() => handleDeleteTag(tag.name)} className="ml-1 hover:text-destructive">
+                        <Trash2 className="h-3 w-3" />
+                      </button>
+                    </Badge>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>

@@ -1,6 +1,6 @@
 'use server';
 
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/lib/supabase-server';
 import { slugify } from '@/lib/utils';
 import { revalidatePath } from 'next/cache';
 
@@ -14,6 +14,7 @@ export interface Category {
 }
 
 export async function getCategories() {
+    const supabase = await createClient();
     const { data, error } = await supabase
         .from('categories')
         .select('*')
@@ -28,6 +29,7 @@ export async function getCategories() {
 }
 
 export async function createCategory(data: { name: string; parent_id?: string | null; description?: string }) {
+    const supabase = await createClient();
     const slug = slugify(data.name);
 
     const { data: newCategory, error } = await supabase
@@ -53,6 +55,7 @@ export async function createCategory(data: { name: string; parent_id?: string | 
 }
 
 export async function deleteCategory(id: string) {
+    const supabase = await createClient();
     const { error } = await supabase
         .from('categories')
         .delete()

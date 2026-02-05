@@ -1,6 +1,6 @@
 'use server';
 
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/lib/supabase-server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { slugify } from '@/lib/utils'; // Assuming this executes safely on server
@@ -11,6 +11,7 @@ import { Opportunity } from '@/lib/types';
 // In a real app we'd validate with Zod here too.
 
 export async function createOpportunity(data: any) {
+    const supabase = await createClient();
     // Basic validation / transformation
     // Arrays might come in as strings if we used FormData, but if we pass JSON from client component we get arrays.
 
@@ -75,6 +76,7 @@ export async function createOpportunity(data: any) {
 }
 
 export async function updateOpportunity(id: string, data: any) {
+    const supabase = await createClient();
     const eligibilityArray = typeof data.eligibility === 'string'
         ? data.eligibility.split('\n').filter((line: string) => line.trim() !== '')
         : data.eligibility;
@@ -132,6 +134,7 @@ export async function updateOpportunity(id: string, data: any) {
 }
 
 export async function deleteOpportunity(id: string) {
+    const supabase = await createClient();
     // 1. Fetch the opportunity to get the image URL
     const { data: opportunity, error: fetchError } = await supabase
         .from('opportunities')

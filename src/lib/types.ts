@@ -14,6 +14,7 @@ export type Level =
   | 'Graduate'
   | 'Postgraduate'
   | 'Professional'
+  | 'Internship'
   | 'All Levels';
 
 export type OpportunityStatus = 'published' | 'draft';
