@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import { ConditionalLayout } from '@/components/conditional-layout';
 import Script from 'next/script';
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://jobsyde.com'),
@@ -79,6 +80,7 @@ export default function RootLayout({
         </Script>
         <ConditionalLayout>{children}</ConditionalLayout>
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );
