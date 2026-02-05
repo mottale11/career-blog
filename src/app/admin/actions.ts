@@ -131,10 +131,10 @@ export async function updateOpportunity(id: string, data: any) {
 
 export async function deleteOpportunity(id: string) {
     const supabase = await createClient();
-    // 1. Fetch the opportunity to get the image URL
+    // 1. Fetch the opportunity to get the image URL and slug for revalidation
     const { data: opportunity, error: fetchError } = await supabase
         .from('opportunities')
-        .select('image')
+        .select('image, slug, category')
         .eq('id', id)
         .single();
 
@@ -176,6 +176,19 @@ export async function deleteOpportunity(id: string) {
         throw new Error('Failed to delete opportunity');
     }
 
+    // 4. Revalidate paths
     revalidatePath('/admin/opportunities');
-    // We do NOT redirect here because this is likely called from the list page
+    revalidatePath('/'); // Homepage
+    if (opportunity?.slug) {
+        revalidatePath(`/opportunity/${opportunity.slug}`);
+    }
+    if (opportunity?.category) {
+        // Assuming category pages are like /jobs, /scholarships etc. based on the category name
+        // If category is a slug, we use it directly. If it's a name like "Jobs", we might need to slugify it or if the routes are /jobs.
+        // Based on data.ts, categories are simple strings.
+        // Let's safe bet revalidate everything or try to guess. The category links component uses logic.
+        // For now, revalidating the specific opportunity and homepage is the most critical.
+        // We can also try to revalidate the category path if it matches the category name lowercased.
+        revalidatePath(`/${opportunity.category.toLowerCase()}`);
+    }
 }
