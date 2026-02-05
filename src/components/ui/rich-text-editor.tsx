@@ -55,7 +55,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
             <Button
                 variant={editor.isActive("bold") ? "default" : "ghost"}
                 size="sm"
-                onClick={() => editor.chain().focus().toggleBold().run()}
+                onClick={(e) => { e.preventDefault(); editor.chain().focus().toggleBold().run(); }}
                 disabled={!editor.can().chain().focus().toggleBold().run()}
                 type="button"
             >
@@ -64,7 +64,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
             <Button
                 variant={editor.isActive("italic") ? "default" : "ghost"}
                 size="sm"
-                onClick={() => editor.chain().focus().toggleItalic().run()}
+                onClick={(e) => { e.preventDefault(); editor.chain().focus().toggleItalic().run(); }}
                 disabled={!editor.can().chain().focus().toggleItalic().run()}
                 type="button"
             >
@@ -73,7 +73,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
             <Button
                 variant={editor.isActive("heading", { level: 1 }) ? "default" : "ghost"}
                 size="sm"
-                onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+                onClick={(e) => { e.preventDefault(); editor.chain().focus().toggleHeading({ level: 1 }).run(); }}
                 type="button"
             >
                 <Heading1 className="h-4 w-4" />
@@ -81,7 +81,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
             <Button
                 variant={editor.isActive("heading", { level: 2 }) ? "default" : "ghost"}
                 size="sm"
-                onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+                onClick={(e) => { e.preventDefault(); editor.chain().focus().toggleHeading({ level: 2 }).run(); }}
                 type="button"
             >
                 <Heading2 className="h-4 w-4" />
@@ -89,7 +89,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
             <Button
                 variant={editor.isActive("heading", { level: 3 }) ? "default" : "ghost"}
                 size="sm"
-                onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+                onClick={(e) => { e.preventDefault(); editor.chain().focus().toggleHeading({ level: 3 }).run(); }}
                 type="button"
             >
                 <Heading3 className="h-4 w-4" />
@@ -97,7 +97,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
             <Button
                 variant={editor.isActive("bulletList") ? "default" : "ghost"}
                 size="sm"
-                onClick={() => editor.chain().focus().toggleBulletList().run()}
+                onClick={(e) => { e.preventDefault(); editor.chain().focus().toggleBulletList().run(); }}
                 type="button"
             >
                 <List className="h-4 w-4" />
@@ -105,7 +105,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
             <Button
                 variant={editor.isActive("orderedList") ? "default" : "ghost"}
                 size="sm"
-                onClick={() => editor.chain().focus().toggleOrderedList().run()}
+                onClick={(e) => { e.preventDefault(); editor.chain().focus().toggleOrderedList().run(); }}
                 type="button"
             >
                 <ListOrdered className="h-4 w-4" />
@@ -113,7 +113,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
             <Button
                 variant={editor.isActive("link") ? "default" : "ghost"}
                 size="sm"
-                onClick={addLink}
+                onClick={(e) => { e.preventDefault(); addLink(); }}
                 type="button"
             >
                 <LinkIcon className="h-4 w-4" />
@@ -121,7 +121,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
             <Button
                 variant={editor.isActive("table") ? "default" : "ghost"}
                 size="sm"
-                onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}
+                onClick={(e) => { e.preventDefault(); editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(); }}
                 type="button"
             >
                 <TableIcon className="h-4 w-4" />
@@ -130,7 +130,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
                 <Button
                     variant="destructive"
                     size="sm"
-                    onClick={() => editor.chain().focus().deleteTable().run()}
+                    onClick={(e) => { e.preventDefault(); editor.chain().focus().deleteTable().run(); }}
                     type="button"
                 >
                     <Trash2 className="h-4 w-4" />
@@ -140,7 +140,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
             <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => editor.chain().focus().undo().run()}
+                onClick={(e) => { e.preventDefault(); editor.chain().focus().undo().run(); }}
                 disabled={!editor.can().chain().focus().undo().run()}
                 type="button"
             >
@@ -149,7 +149,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
             <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => editor.chain().focus().redo().run()}
+                onClick={(e) => { e.preventDefault(); editor.chain().focus().redo().run(); }}
                 disabled={!editor.can().chain().focus().redo().run()}
                 type="button"
             >

@@ -7,22 +7,23 @@ import Script from 'next/script';
 import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://jobsyde.com'),
+  metadataBase: new URL('https://www.jobslot.site'),
   title: {
-    default: 'Jobsyde',
-    template: '%s | Jobsyde',
+    default: 'Jobslot',
+    template: '%s | Jobslot',
   },
   description:
     'Your guide to Jobs, Scholarships, Internships, Fellowships, Grants, and Career Development Opportunities.',
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://jobsyde.com',
-    siteName: 'Jobsyde',
+    url: 'https://www.jobslot.site',
+    siteName: 'Jobslot',
   },
   verification: {
     google: '46Cid1mY9s4RHwjPmEBokhdo0OmM3Dv0teaqesQpgJw',
   },
+  keywords: ['Jobs', 'Scholarships', 'Internships', 'Fellowships', 'Grants', 'Career Advice', 'Jobslot', 'Career Development', 'Study Abroad'],
 };
 
 export default function RootLayout({

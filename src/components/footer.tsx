@@ -1,5 +1,6 @@
 import { Linkedin, Twitter, Facebook } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { LogoIcon } from './logo-icon';
 
 export function Footer() {
@@ -9,11 +10,13 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-2 md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
-              <LogoIcon className="h-8 w-8" />
-              <span className="font-bold text-xl font-headline">Jobsyde</span>
+              <div className="relative h-10 w-10">
+                <Image src="/jobslot_logo.png" alt="Jobslot Logo" fill className="object-contain" />
+              </div>
+              <span className="font-bold text-xl font-headline">Jobslot</span>
             </div>
             <p className="text-muted-foreground text-sm max-w-md">
-              Jobsyde is a career-focused platform dedicated to sharing verified
+              Jobslot is a career-focused platform dedicated to sharing verified
               job openings, scholarships, internships, fellowships, grants, and
               career development opportunities from around the world. Our goal
               is to help students, graduates, and professionals discover
@@ -40,14 +43,14 @@ export function Footer() {
               Opportunities
             </h3>
             <ul className="mt-4 space-y-2 text-sm">
-                <li><Link href="/opportunities?category=Jobs&q=Entry+Level" className="text-muted-foreground hover:text-primary">Entry Level Jobs</Link></li>
-                <li><Link href="/opportunities?category=Jobs&q=Remote" className="text-muted-foreground hover:text-primary">Remote Jobs</Link></li>
-                <li><Link href="/opportunities?category=Jobs&q=Government" className="text-muted-foreground hover:text-primary">Government Jobs</Link></li>
-                <li><Link href="/opportunities?category=Scholarships&q=Fully+Funded" className="text-muted-foreground hover:text-primary">Fully Funded Scholarships</Link></li>
-                <li><Link href="/opportunities?category=Internships&q=International" className="text-muted-foreground hover:text-primary">International Internships</Link></li>
-                <li><Link href="/opportunities?category=Fellowships&q=Research" className="text-muted-foreground hover:text-primary">Research Fellowships</Link></li>
+              <li><Link href="/opportunities?category=Jobs&q=Entry+Level" className="text-muted-foreground hover:text-primary">Entry Level Jobs</Link></li>
+              <li><Link href="/opportunities?category=Jobs&q=Remote" className="text-muted-foreground hover:text-primary">Remote Jobs</Link></li>
+              <li><Link href="/opportunities?category=Jobs&q=Government" className="text-muted-foreground hover:text-primary">Government Jobs</Link></li>
+              <li><Link href="/opportunities?category=Scholarships&q=Fully+Funded" className="text-muted-foreground hover:text-primary">Fully Funded Scholarships</Link></li>
+              <li><Link href="/opportunities?category=Internships&q=International" className="text-muted-foreground hover:text-primary">International Internships</Link></li>
+              <li><Link href="/opportunities?category=Fellowships&q=Research" className="text-muted-foreground hover:text-primary">Research Fellowships</Link></li>
             </ul>
-             <h3 className="font-semibold font-headline tracking-wider uppercase text-sm mt-6">
+            <h3 className="font-semibold font-headline tracking-wider uppercase text-sm mt-6">
               Resources
             </h3>
             <ul className="mt-4 space-y-2 text-sm">
@@ -57,7 +60,7 @@ export function Footer() {
         </div>
         <div className="mt-12 border-t pt-8 flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Jobsyde. All rights reserved.
+            © {new Date().getFullYear()} Jobslot. All rights reserved.
           </p>
           <div className="flex items-center space-x-4">
             <Link href="#" className="text-muted-foreground hover:text-primary">

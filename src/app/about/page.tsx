@@ -4,9 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, Target, Eye } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'About Us | Jobsyde',
+  title: 'About Us | Jobslot',
   description:
-    'Learn more about Jobsyde, our mission, and the team behind the platform.',
+    'Learn more about Jobslot, our mission, and the team behind the platform.',
 };
 
 export default function AboutPage() {
@@ -14,7 +14,7 @@ export default function AboutPage() {
     <div className="container mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="flex flex-col items-center text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold font-headline tracking-tight">
-          About Jobsyde
+          About Jobslot
         </h1>
         <p className="mt-4 max-w-3xl text-lg text-muted-foreground">
           Your trusted guide in the journey to discover and seize career-defining opportunities from across the globe.
@@ -37,14 +37,14 @@ export default function AboutPage() {
 
       <div className="max-w-4xl mx-auto space-y-8 text-lg text-foreground/90">
         <p>
-          Jobsyde is a career-focused platform dedicated to sharing verified
+          Jobslot is a career-focused platform dedicated to sharing verified
           job openings, scholarships, internships, fellowships, grants, and
           career development opportunities from around the world. Our goal
           is to help students, graduates, and professionals discover
           opportunities that move their careers forward.
         </p>
         <p>
-          In a world filled with endless information, finding the right opportunity can be overwhelming. We started Jobsyde to cut through the noise and create a single, reliable source for verified, high-quality opportunities. We believe that everyone, regardless of their background or location, deserves access to chances that can shape their future.
+          In a world filled with endless information, finding the right opportunity can be overwhelming. We started Jobslot to cut through the noise and create a single, reliable source for verified, high-quality opportunities. We believe that everyone, regardless of their background or location, deserves access to chances that can shape their future.
         </p>
       </div>
 
@@ -65,7 +65,7 @@ export default function AboutPage() {
         <Card>
           <CardHeader className="flex flex-row items-center gap-4">
             <div className="bg-primary/10 p-3 rounded-full">
-               <Eye className="w-8 h-8 text-primary" />
+              <Eye className="w-8 h-8 text-primary" />
             </div>
             <CardTitle className="font-headline text-2xl">Our Vision</CardTitle>
           </CardHeader>
@@ -75,10 +75,10 @@ export default function AboutPage() {
             </p>
           </CardContent>
         </Card>
-         <Card className="md:col-span-2 lg:col-span-1">
+        <Card className="md:col-span-2 lg:col-span-1">
           <CardHeader className="flex flex-row items-center gap-4">
             <div className="bg-primary/10 p-3 rounded-full">
-               <Users className="w-8 h-8 text-primary" />
+              <Users className="w-8 h-8 text-primary" />
             </div>
             <CardTitle className="font-headline text-2xl">Our Team</CardTitle>
           </CardHeader>

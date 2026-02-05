@@ -59,10 +59,10 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-7xl items-center justify-between">
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center space-x-2">
-            <Image src="/logo.png" alt="Jobsyde Logo" width={32} height={32} className="h-8 w-8 object-contain" />
-            <span className="hidden font-bold sm:inline-block font-headline">
-              Jobsyde
+          <Link href="/" className="flex items-center space-x-3">
+            <Image src="/jobslot_logo.png" alt="Jobslot Logo" width={48} height={48} className="h-12 w-auto object-contain" />
+            <span className="hidden font-bold sm:inline-block font-headline text-2xl tracking-tight">
+              Jobslot
             </span>
           </Link>
           <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
@@ -134,8 +134,8 @@ export function Header() {
                 <div className="flex h-full flex-col">
                   <div className="flex items-center justify-between border-b p-4">
                     <Link href="/" className="flex items-center space-x-2" onClick={() => setIsSheetOpen(false)}>
-                      <Image src="/logo.png" alt="Jobsyde Logo" width={32} height={32} className="h-8 w-8 object-contain" />
-                      <span className="font-bold font-headline">Jobsyde</span>
+                      <Image src="/jobslot_logo.png" alt="Jobslot Logo" width={48} height={48} className="h-10 w-auto object-contain" />
+                      <span className="font-bold font-headline text-xl">Jobslot</span>
                     </Link>
                     <SheetClose asChild>
                       <Button variant="ghost" size="icon" aria-label="Close menu">

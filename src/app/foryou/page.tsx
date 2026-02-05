@@ -1,8 +1,9 @@
 import { getOpportunities } from "@/lib/data";
+import { Metadata } from "next";
 import { PersonalizedRecommendations } from "@/components/personalized-recommendations";
 
-export const metadata = {
-  title: "Personalized Recommendations | Jobsyde",
+export const metadata: Metadata = {
+  title: "Personalized Recommendations | Jobslot",
   description: "Get personalized opportunity recommendations based on your profile.",
 };
 

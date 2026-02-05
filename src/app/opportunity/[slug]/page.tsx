@@ -9,7 +9,6 @@ import {
   GraduationCap,
   Link as LinkIcon,
   MapPin,
-  Share2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -23,6 +22,7 @@ import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { OpportunitySummary } from '@/components/opportunity-summary';
 import { OpportunityCard } from '@/components/opportunity-card';
+import { ShareButton } from '@/components/share-button';
 import {
   Carousel,
   CarouselContent,
@@ -132,37 +132,10 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
 
             <OpportunitySummary description={opportunity.description} />
 
-            <div className="prose max-w-none mt-8">
-              {opportunity.eligibility.length > 0 && (
-                <>
-                  <h2 className="font-headline text-2xl font-bold">Eligibility</h2>
-                  <ul className="list-disc pl-5">
-                    {opportunity.eligibility.map((item, index) => (
-                      <li key={index}>{item}</li>
-                    ))}
-                  </ul>
-                </>
-              )}
-
-              {opportunity.benefits.length > 0 && (
-                <>
-                  <h2 className="font-headline text-2xl font-bold mt-8">Benefits</h2>
-                  <ul className="list-disc pl-5">
-                    {opportunity.benefits.map((item, index) => (
-                      <li key={index}>{item}</li>
-                    ))}
-                  </ul>
-                </>
-              )}
-
-              {opportunity.applicationProcess && (
-                <>
-                  <h2 className="font-headline text-2xl font-bold mt-8">Application Process</h2>
-                  <p>{opportunity.applicationProcess}</p>
-                </>
-              )}
-
-            </div>
+            <div
+              className="prose max-w-none mt-8 dark:prose-invert"
+              dangerouslySetInnerHTML={{ __html: opportunity.description }}
+            />
 
             {opportunity.tags && opportunity.tags.length > 0 && (
               <div className="mt-8 pt-8 border-t">
@@ -214,9 +187,10 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <Button variant="outline" className="w-full">
-                  <Share2 className="w-4 h-4 mr-2" /> Share
-                </Button>
+                <ShareButton
+                  title={opportunity.title}
+                  text={`Check out this opportunity: ${opportunity.title}`}
+                />
               </CardContent>
             </Card>
           </div>

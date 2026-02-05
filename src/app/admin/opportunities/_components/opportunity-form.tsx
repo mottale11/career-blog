@@ -61,9 +61,6 @@ const opportunitySchema = z.object({
     level: z.string({ required_error: 'Please select a level.' }),
     summary: z.string().optional(),
     description: z.string().min(20),
-    eligibility: z.string(),
-    benefits: z.string(),
-    applicationProcess: z.string(),
     deadline: z.date(),
     applicationLink: z.string().url(),
     featured: z.boolean(),
@@ -98,9 +95,6 @@ export function OpportunityForm({ opportunity, categories }: OpportunityFormProp
         level: opportunity?.level ?? 'All Levels',
         summary: opportunity?.summary ?? '',
         description: opportunity?.description ?? '',
-        eligibility: opportunity?.eligibility.join('\n') ?? '',
-        benefits: opportunity?.benefits.join('\n') ?? '',
-        applicationProcess: opportunity?.applicationProcess ?? '',
         deadline: opportunity?.deadline ? new Date(opportunity.deadline) : new Date(),
         applicationLink: opportunity?.applicationLink ?? '',
         featured: opportunity?.featured ?? false,
@@ -226,52 +220,7 @@ export function OpportunityForm({ opportunity, categories }: OpportunityFormProp
                         </CardContent>
                     </Card>
 
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Details & Requirements</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <FormField
-                                control={form.control}
-                                name="eligibility"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Eligibility</FormLabel>
-                                        <FormControl>
-                                            <Textarea rows={5} placeholder="Enter each requirement on a new line." {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="benefits"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Benefits</FormLabel>
-                                        <FormControl>
-                                            <Textarea rows={5} placeholder="Enter each benefit on a new line." {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="applicationProcess"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Application Process</FormLabel>
-                                        <FormControl>
-                                            <Textarea placeholder="Describe the steps to apply." {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </CardContent>
-                    </Card>
+
 
                     <Card>
                         <CardHeader>

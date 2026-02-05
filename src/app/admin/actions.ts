@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '@/lib/supabase-server';
+import { createClient, createAdminClient } from '@/lib/supabase-server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { slugify } from '@/lib/utils'; // Assuming this executes safely on server
@@ -28,8 +28,6 @@ export async function createOpportunity(data: any) {
     // The database expects `text[]`.
     // So we MUST transform these strings back to arrays.
 
-    const eligibilityArray = data.eligibility.split('\n').filter((line: string) => line.trim() !== '');
-    const benefitsArray = data.benefits.split('\n').filter((line: string) => line.trim() !== '');
     const tagsArray = data.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag !== '');
 
     // Resolve category_id
@@ -38,6 +36,10 @@ export async function createOpportunity(data: any) {
         const { data: catData } = await supabase.from('categories').select('id').eq('name', data.category).single();
         if (catData) categoryId = catData.id;
     }
+
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    console.log('createOpportunity User:', user?.id, user?.email);
+    if (userError) console.error('Error fetching user:', userError);
 
     const { error } = await supabase.from('opportunities').insert({
         title: data.title,
@@ -50,9 +52,9 @@ export async function createOpportunity(data: any) {
         level: data.level,
         summary: data.summary,
         description: data.description,
-        eligibility: eligibilityArray,
-        benefits: benefitsArray,
-        "applicationProcess": data.applicationProcess,
+        eligibility: [],
+        benefits: [],
+        "applicationProcess": "",
         deadline: data.deadline,
         "applicationLink": data.applicationLink,
         featured: data.featured,
@@ -67,7 +69,7 @@ export async function createOpportunity(data: any) {
 
     if (error) {
         console.error('Error creating opportunity:', error);
-        throw new Error('Failed to create opportunity');
+        throw new Error('Failed to create opportunity: ' + error.message);
     }
 
     revalidatePath('/admin/opportunities');
@@ -77,13 +79,7 @@ export async function createOpportunity(data: any) {
 
 export async function updateOpportunity(id: string, data: any) {
     const supabase = await createClient();
-    const eligibilityArray = typeof data.eligibility === 'string'
-        ? data.eligibility.split('\n').filter((line: string) => line.trim() !== '')
-        : data.eligibility;
 
-    const benefitsArray = typeof data.benefits === 'string'
-        ? data.benefits.split('\n').filter((line: string) => line.trim() !== '')
-        : data.benefits;
 
     const tagsArray = typeof data.tags === 'string'
         ? data.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag !== '')
@@ -107,9 +103,9 @@ export async function updateOpportunity(id: string, data: any) {
         level: data.level,
         summary: data.summary,
         description: data.description,
-        eligibility: eligibilityArray,
-        benefits: benefitsArray,
-        "applicationProcess": data.applicationProcess,
+        eligibility: [],
+        benefits: [],
+        "applicationProcess": "",
         deadline: data.deadline,
         "applicationLink": data.applicationLink,
         featured: data.featured,

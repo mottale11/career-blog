@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
             allow: '/',
             disallow: '/admin/',
         },
-        sitemap: 'https://jobsyde.com/sitemap.xml',
+        sitemap: 'https://www.jobslot.site/sitemap.xml',
     };
 }

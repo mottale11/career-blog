@@ -4,7 +4,7 @@ import { categories } from '@/lib/data';
 import { slugify } from '@/lib/utils';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = 'https://jobsyde.com';
+    const baseUrl = 'https://www.jobslot.site';
 
     // Static pages
     const routes = [
