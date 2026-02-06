@@ -30,12 +30,10 @@ export async function createOpportunity(data: any) {
 
     const tagsArray = data.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag !== '');
 
-    // Resolve category_id
-    let categoryId = null;
-    if (data.category) {
-        const { data: catData } = await supabase.from('categories').select('id').eq('name', data.category).single();
-        if (catData) categoryId = catData.id;
-    }
+    // Category is now an array
+    // We can skip category_id for now as it doesn't make sense for multiple categories unless we store an array of IDs
+    // or a primary category ID. The instruction was to remove it if unused.
+    // Let's keep it simple and just save the array of names.
 
     const { data: { user }, error: userError } = await supabase.auth.getUser();
     console.log('createOpportunity User:', user?.id, user?.email);
@@ -44,8 +42,8 @@ export async function createOpportunity(data: any) {
     const { error } = await supabase.from('opportunities').insert({
         title: data.title,
         slug: data.slug || slugify(data.title),
-        category: data.category,
-        category_id: categoryId,
+        category: data.category, // Now an array
+        // category_id: categoryId, // Removing single category ID logic
         organization: data.organization,
         location: data.location,
         country: data.country,
@@ -62,6 +60,8 @@ export async function createOpportunity(data: any) {
         image: data.image,
         "imageHint": data.imageHint,
         tags: tagsArray,
+        industries: data.industries || [],
+        fields: data.fields || [],
         status: data.status,
         "metaTitle": data.metaTitle,
         "metaDescription": data.metaDescription,
@@ -74,7 +74,7 @@ export async function createOpportunity(data: any) {
 
     revalidatePath('/admin/opportunities');
     revalidatePath('/'); // Homepage might change
-    redirect('/admin/opportunities');
+    return { success: true };
 }
 
 export async function updateOpportunity(id: string, data: any) {
@@ -85,18 +85,11 @@ export async function updateOpportunity(id: string, data: any) {
         ? data.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag !== '')
         : data.tags;
 
-    // Resolve category_id
-    let categoryId = null;
-    if (data.category) {
-        const { data: catData } = await supabase.from('categories').select('id').eq('name', data.category).single();
-        if (catData) categoryId = catData.id;
-    }
-
     const { error } = await supabase.from('opportunities').update({
         title: data.title,
         slug: data.slug,
         category: data.category,
-        category_id: categoryId,
+        // category_id: categoryId,
         organization: data.organization,
         location: data.location,
         country: data.country,
@@ -113,6 +106,8 @@ export async function updateOpportunity(id: string, data: any) {
         image: data.image,
         "imageHint": data.imageHint,
         tags: tagsArray,
+        industries: data.industries || [],
+        fields: data.fields || [],
         status: data.status,
         "metaTitle": data.metaTitle,
         "metaDescription": data.metaDescription,
@@ -126,7 +121,7 @@ export async function updateOpportunity(id: string, data: any) {
     revalidatePath('/admin/opportunities');
     revalidatePath(`/opportunity/${data.slug}`);
     revalidatePath('/');
-    redirect('/admin/opportunities');
+    return { success: true };
 }
 
 export async function deleteOpportunity(id: string) {

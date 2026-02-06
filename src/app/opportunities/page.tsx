@@ -6,8 +6,11 @@ import { Suspense } from 'react';
 
 type SearchParams = {
   q?: string;
+  category?: string;
   country?: string;
   level?: string;
+  industry?: string;
+  remote?: string;
 };
 
 export default async function OpportunitiesPage({
@@ -30,7 +33,16 @@ export default async function OpportunitiesPage({
 }
 
 async function OpportunityGrid({ searchParams }: { searchParams: SearchParams }) {
-  let opportunities = await getOpportunities();
+  // Map search params to data fetching filters
+  const filters = {
+    category: searchParams.category,
+    location: searchParams.country,
+    level: searchParams.level,
+    industry: searchParams.industry,
+    remote: searchParams.remote,
+  };
+
+  let opportunities = await getOpportunities(filters);
 
   if (searchParams.q) {
     const query = searchParams.q.toLowerCase();
@@ -40,14 +52,6 @@ async function OpportunityGrid({ searchParams }: { searchParams: SearchParams })
         o.summary.toLowerCase().includes(query) ||
         o.organization.toLowerCase().includes(query)
     );
-  }
-
-  if (searchParams.country && searchParams.country !== 'all') {
-    opportunities = opportunities.filter(o => o.country === searchParams.country);
-  }
-
-  if (searchParams.level && searchParams.level !== 'all') {
-    opportunities = opportunities.filter(o => o.level === searchParams.level);
   }
 
   const title = searchParams.q

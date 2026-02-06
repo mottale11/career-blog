@@ -31,7 +31,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Switch } from '@/components/ui/switch';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -40,21 +39,24 @@ import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import type { Opportunity, Level } from '@/lib/types';
 import type { Category } from '@/lib/categories';
-// import { categories } from '@/lib/data';
+import type { Industry } from '@/lib/industries';
+import type { Field } from '@/lib/fields';
 import { format, isValid } from 'date-fns';
 import { slugify } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { uploadImage } from '@/lib/storage';
+import { MultiSelect } from '@/components/ui/multi-select';
+import { RichTextEditor } from '@/components/ui/rich-text-editor';
 
 const countries = ['Kenya', 'Uganda', 'Tanzania', 'Rwanda', 'Ethiopia', 'South Africa', 'Nigeria', 'Ghana', 'USA', 'UK', 'Australia', 'Ireland', 'Global'];
 const levels: Level[] = ['Undergraduate', 'Graduate', 'Postgraduate', 'Professional', 'Internship', 'All Levels'];
 
-import { RichTextEditor } from '@/components/ui/rich-text-editor';
-
 const opportunitySchema = z.object({
     title: z.string().min(2, { message: 'Title must be at least 2 characters.' }),
     slug: z.string().min(2, { message: 'Slug must be at least 2 characters.' }),
-    category: z.string({ required_error: 'Please select a category.' }),
+    category: z.array(z.string()).min(1, { message: 'Please select at least one category.' }),
+    industries: z.array(z.string()).optional(),
+    fields: z.array(z.string()).optional(),
     organization: z.string().min(2),
     location: z.string(),
     country: z.string({ required_error: 'Please select a country.' }),
@@ -78,9 +80,11 @@ type OpportunityFormValues = z.infer<typeof opportunitySchema>;
 interface OpportunityFormProps {
     opportunity?: Opportunity;
     categories: Category[];
+    industries: Industry[];
+    fields: Field[];
 }
 
-export function OpportunityForm({ opportunity, categories }: OpportunityFormProps) {
+export function OpportunityForm({ opportunity, categories, industries, fields }: OpportunityFormProps) {
     const { toast } = useToast();
     const router = useRouter();
     const isEditMode = !!opportunity;
@@ -88,7 +92,9 @@ export function OpportunityForm({ opportunity, categories }: OpportunityFormProp
     const defaultValues = {
         title: opportunity?.title ?? '',
         slug: opportunity?.slug ?? '',
-        category: opportunity?.category ?? 'Jobs',
+        category: opportunity?.category ?? [],
+        industries: opportunity?.industries ?? [],
+        fields: opportunity?.fields ?? [],
         organization: opportunity?.organization ?? '',
         location: opportunity?.location ?? '',
         country: opportunity?.country ?? 'Global',
@@ -135,14 +141,17 @@ export function OpportunityForm({ opportunity, categories }: OpportunityFormProp
                     title: "Opportunity updated",
                     description: "The opportunity has been successfully updated.",
                 });
+                router.push('/admin/opportunities');
+                router.refresh();
             } else {
                 await createOpportunity(submissionData);
                 toast({
                     title: "Opportunity created",
                     description: "The new opportunity has been successfully created.",
                 });
+                router.push('/admin/opportunities');
+                router.refresh();
             }
-            // Redirect is handled in server action, but we might want to ensure we don't do anything else
         } catch (error) {
             console.error(error);
             toast({
@@ -220,7 +229,51 @@ export function OpportunityForm({ opportunity, categories }: OpportunityFormProp
                         </CardContent>
                     </Card>
 
-
+                    <Card>
+                        <CardHeader><CardTitle>Flags & Visibility</CardTitle></CardHeader>
+                        <CardContent className="space-y-4">
+                            <FormField
+                                control={form.control}
+                                name="featured"
+                                render={({ field }) => (
+                                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                                        <div className="space-y-0.5">
+                                            <FormLabel>Featured</FormLabel>
+                                            <FormDescription>
+                                                Display this on the homepage.
+                                            </FormDescription>
+                                        </div>
+                                        <FormControl>
+                                            <Switch
+                                                checked={field.value}
+                                                onCheckedChange={field.onChange}
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="trending"
+                                render={({ field }) => (
+                                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                                        <div className="space-y-0.5">
+                                            <FormLabel>Hiring Now</FormLabel>
+                                            <FormDescription>
+                                                Mark this as a "hiring now" post.
+                                            </FormDescription>
+                                        </div>
+                                        <FormControl>
+                                            <Switch
+                                                checked={field.value}
+                                                onCheckedChange={field.onChange}
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                        </CardContent>
+                    </Card>
 
                     <Card>
                         <CardHeader>
@@ -262,9 +315,8 @@ export function OpportunityForm({ opportunity, categories }: OpportunityFormProp
                 {/* Sidebar */}
                 <div className="lg:col-span-1 space-y-8">
                     <Card>
-                        <CardHeader><CardTitle>Status & Visibility</CardTitle></CardHeader>
+                        <CardHeader><CardTitle>Status & Deadline</CardTitle></CardHeader>
                         <CardContent className="space-y-4">
-                            {/* Status field removed in favor of action buttons */}
                             <FormField
                                 control={form.control}
                                 name="deadline"
@@ -308,7 +360,7 @@ export function OpportunityForm({ opportunity, categories }: OpportunityFormProp
                     </Card>
 
                     <Card>
-                        <CardHeader><CardTitle>Organization</CardTitle></CardHeader>
+                        <CardHeader><CardTitle>Classification</CardTitle></CardHeader>
                         <CardContent className="space-y-4">
                             <FormField
                                 control={form.control}
@@ -316,28 +368,50 @@ export function OpportunityForm({ opportunity, categories }: OpportunityFormProp
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Category</FormLabel>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                            <FormControl>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Select a category" />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                {categories.filter(c => !c.parent_id).map((category) => (
-                                                    <div key={category.id}>
-                                                        <SelectItem value={category.name}>
-                                                            {category.name}
-                                                        </SelectItem>
-                                                        {categories.filter(c => c.parent_id === category.id).map(child => (
-                                                            <SelectItem key={child.id} value={child.name} className="pl-6">
-                                                                - {child.name}
-                                                            </SelectItem>
-                                                        ))}
-                                                    </div>
-                                                ))}
-                                                {categories.length === 0 && <span className="p-2 text-sm text-muted-foreground">No categories found.</span>}
-                                            </SelectContent>
-                                        </Select>
+                                        <FormControl>
+                                            <MultiSelect
+                                                selected={field.value}
+                                                options={categories.map(c => ({ label: c.name, value: c.name }))}
+                                                onChange={field.onChange}
+                                                placeholder="Select categories"
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="industries"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Industries</FormLabel>
+                                        <FormControl>
+                                            <MultiSelect
+                                                selected={field.value || []}
+                                                options={industries.map(i => ({ label: i.name, value: i.name }))}
+                                                onChange={field.onChange}
+                                                placeholder="Select industries"
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="fields"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Fields of Study</FormLabel>
+                                        <FormControl>
+                                            <MultiSelect
+                                                selected={field.value || []}
+                                                options={fields.map(f => ({ label: f.name, value: f.name }))}
+                                                onChange={field.onChange}
+                                                placeholder="Select fields"
+                                            />
+                                        </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -356,6 +430,12 @@ export function OpportunityForm({ opportunity, categories }: OpportunityFormProp
                                     </FormItem>
                                 )}
                             />
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader><CardTitle>Organization</CardTitle></CardHeader>
+                        <CardContent className="space-y-4">
                             <FormField
                                 control={form.control}
                                 name="organization"
@@ -506,52 +586,6 @@ export function OpportunityForm({ opportunity, categories }: OpportunityFormProp
                                             <Input placeholder="https://jobs.example.com/apply/123" {...field} />
                                         </FormControl>
                                         <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader><CardTitle>Flags</CardTitle></CardHeader>
-                        <CardContent className="space-y-4">
-                            <FormField
-                                control={form.control}
-                                name="featured"
-                                render={({ field }) => (
-                                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                                        <div className="space-y-0.5">
-                                            <FormLabel>Featured</FormLabel>
-                                            <FormDescription>
-                                                Display this on the homepage.
-                                            </FormDescription>
-                                        </div>
-                                        <FormControl>
-                                            <Switch
-                                                checked={field.value}
-                                                onCheckedChange={field.onChange}
-                                            />
-                                        </FormControl>
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="trending"
-                                render={({ field }) => (
-                                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                                        <div className="space-y-0.5">
-                                            <FormLabel>Hiring Now</FormLabel>
-                                            <FormDescription>
-                                                Mark this as a "hiring now" post.
-                                            </FormDescription>
-                                        </div>
-                                        <FormControl>
-                                            <Switch
-                                                checked={field.value}
-                                                onCheckedChange={field.onChange}
-                                            />
-                                        </FormControl>
                                     </FormItem>
                                 )}
                             />

@@ -23,7 +23,7 @@ export type Opportunity = {
   id: string;
   slug: string;
   title: string;
-  category: Category;
+  category: Category[];
   organization: string;
   location: string;
   country: string;
@@ -40,6 +40,8 @@ export type Opportunity = {
   image: string;
   imageHint: string;
   tags: string[];
+  industries: string[];
+  fields: string[];
   status: OpportunityStatus;
   created_at?: string;
   metaTitle?: string;

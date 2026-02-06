@@ -1,5 +1,6 @@
 import { getOpportunityBySlug, getOpportunities } from '@/lib/data';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -44,6 +45,34 @@ export async function generateStaticParams() {
   }));
 }
 
+export async function generateMetadata({ params }: OpportunityPageProps): Promise<Metadata> {
+  const resolvedParams = await params;
+  const opportunity = await getOpportunityBySlug(resolvedParams.slug);
+
+  if (!opportunity) {
+    return {
+      title: 'Opportunity Not Found',
+      description: 'The requested opportunity could not be found.',
+    };
+  }
+
+  return {
+    title: opportunity.metaTitle || opportunity.title,
+    description: opportunity.metaDescription || opportunity.summary || opportunity.description.substring(0, 160),
+    openGraph: {
+      title: opportunity.metaTitle || opportunity.title,
+      description: opportunity.metaDescription || opportunity.summary || opportunity.description.substring(0, 160),
+      images: [opportunity.image],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: opportunity.metaTitle || opportunity.title,
+      description: opportunity.metaDescription || opportunity.summary || opportunity.description.substring(0, 160),
+      images: [opportunity.image],
+    },
+  };
+}
+
 export default async function OpportunityPage({ params }: OpportunityPageProps) {
   const resolvedParams = await params;
   const opportunity = await getOpportunityBySlug(resolvedParams.slug);
@@ -52,7 +81,10 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
     notFound();
   }
 
-  const similarOpportunities = (await getOpportunities(opportunity.category))
+  // Use the first category for similar opportunities recommendation
+  const primaryCategory = Array.isArray(opportunity.category) ? opportunity.category[0] : opportunity.category;
+
+  const similarOpportunities = (await getOpportunities({ category: primaryCategory }))
     .filter((op) => op.id !== opportunity.id)
     .slice(0, 6);
 
@@ -73,7 +105,15 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
               />
             </div>
 
-            <Badge variant={opportunity.category === 'Career Advice' || opportunity.category === 'Study Abroad' ? 'secondary' : 'default'} className="mb-2">{opportunity.category}</Badge>
+            <div className="flex flex-wrap gap-2 mb-2">
+              {Array.isArray(opportunity.category) ? (
+                opportunity.category.map((cat) => (
+                  <Badge key={cat} variant={cat === 'Career Advice' || cat === 'Study Abroad' ? 'secondary' : 'default'}>{cat}</Badge>
+                ))
+              ) : (
+                <Badge variant="default">{opportunity.category}</Badge> /* Fallback for legacy data if any */
+              )}
+            </div>
             <h1 className="font-headline text-3xl md:text-4xl font-extrabold tracking-tight mb-4">
               {opportunity.title}
             </h1>

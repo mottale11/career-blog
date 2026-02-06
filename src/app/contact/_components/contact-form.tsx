@@ -74,6 +74,11 @@ export function ContactForm() {
           <CardDescription className="text-lg mt-2">
             Have a question, feedback, or a partnership inquiry? We'd love to hear from you.
           </CardDescription>
+          <div className="mt-4">
+            <a href="mailto:info@jobslot.site" className="text-primary font-bold text-lg hover:underline">
+              info@jobslot.site
+            </a>
+          </div>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">

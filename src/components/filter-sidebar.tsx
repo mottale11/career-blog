@@ -10,15 +10,22 @@ import {
   SelectValue,
 } from './ui/select';
 
-const countries = ['Kenya', 'Uganda', 'Tanzania', 'Rwanda', 'Ethiopia', 'South Africa', 'Nigeria', 'Ghana', 'USA', 'UK', 'Australia', 'Ireland', 'Global'];
+const locations = ['Kenya', 'Uganda', 'Tanzania', 'Rwanda', 'Ethiopia', 'South Africa', 'Nigeria', 'Ghana', 'USA', 'UK', 'Australia', 'Ireland', 'Global'];
 const levels = ['Undergraduate', 'Graduate', 'Postgraduate', 'Professional', 'Internship', 'All Levels'];
+const industries = ['Technology', 'Finance', 'Healthcare', 'Education', 'Agriculture', 'Engineering', 'Creative', 'Non-profit'];
+const categories = ['Jobs', 'Scholarships', 'Internships', 'Fellowships', 'Grants', 'Career Advice', 'Study Abroad'];
+const remoteOptions = [
+  { label: 'Yes', value: 'true' },
+  { label: 'No', value: 'false' },
+  { label: 'Any', value: 'all' },
+];
 
 export function FilterSidebar() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const handleFilterChange = (type: 'country' | 'level', value: string) => {
+  const handleFilterChange = (type: string, value: string) => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
 
     if (value && value !== 'all') {
@@ -53,9 +60,68 @@ export function FilterSidebar() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Countries</SelectItem>
-              {countries.map((country) => (
+              {locations.map((country) => (
                 <SelectItem key={country} value={country}>
                   {country}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Category</label>
+          <Select
+            onValueChange={(value) => handleFilterChange('category', value)}
+            defaultValue={searchParams.get('category') || 'all'}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select a category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Categories</SelectItem>
+              {categories.map((cat) => (
+                <SelectItem key={cat} value={cat}>
+                  {cat}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Industry</label>
+          <Select
+            onValueChange={(value) => handleFilterChange('industry', value)}
+            defaultValue={searchParams.get('industry') || 'all'}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select an industry" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Industries</SelectItem>
+              {industries.map((ind) => (
+                <SelectItem key={ind} value={ind}>
+                  {ind}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Remote</label>
+          <Select
+            onValueChange={(value) => handleFilterChange('remote', value)}
+            defaultValue={searchParams.get('remote') || 'all'}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Remote?" />
+            </SelectTrigger>
+            <SelectContent>
+              {remoteOptions.map((opt) => (
+                <SelectItem key={opt.value} value={opt.value}>
+                  {opt.label}
                 </SelectItem>
               ))}
             </SelectContent>

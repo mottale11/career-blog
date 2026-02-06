@@ -26,5 +26,5 @@ export async function signIn(formData: FormData) {
 
     console.log('Login successful for:', email);
 
-    redirect('/admin');
+    return { success: true };
 }

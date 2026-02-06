@@ -22,6 +22,11 @@ export function Footer() {
               is to help students, graduates, and professionals discover
               opportunities that move their careers forward.
             </p>
+            <div className="mt-6">
+              <a href="mailto:info@jobslot.site" className="text-green-600 hover:text-green-700 font-bold">
+                info@jobslot.site
+              </a>
+            </div>
           </div>
           <div>
             <h3 className="font-semibold font-headline tracking-wider uppercase text-sm">

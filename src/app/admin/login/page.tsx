@@ -9,8 +9,11 @@ import { Label } from '@/components/ui/label';
 import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
+import { useRouter } from 'next/navigation';
+
 export default function LoginPage() {
     const { toast } = useToast();
+    const router = useRouter();
     const [isLoading, setIsLoading] = React.useState(false);
 
     async function handleSubmit(formData: FormData) {
@@ -23,6 +26,13 @@ export default function LoginPage() {
                     description: result.error,
                     variant: 'destructive',
                 });
+            } else if (result?.success) {
+                toast({
+                    title: 'Login successful',
+                    description: "Redirecting to dashboard...",
+                });
+                router.push('/admin');
+                router.refresh(); // Ensure session state is updated
             }
         } catch (error: any) {
             toast({

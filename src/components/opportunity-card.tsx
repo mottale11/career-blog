@@ -30,7 +30,22 @@ export function OpportunityCard({ opportunity }: OpportunityCardProps) {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             data-ai-hint={opportunity.imageHint}
           />
-           <Badge className="absolute top-2 right-2" variant={opportunity.category === 'Career Advice' || opportunity.category === 'Study Abroad' ? 'secondary' : 'default'}>{opportunity.category}</Badge>
+          <div className="absolute top-2 right-2 flex flex-col items-end gap-1">
+            {Array.isArray(opportunity.category) ? (
+              <>
+                {opportunity.category.slice(0, 2).map((cat) => (
+                  <Badge key={cat} variant={cat === 'Career Advice' || cat === 'Study Abroad' ? 'secondary' : 'default'} className="shadow-sm">
+                    {cat}
+                  </Badge>
+                ))}
+                {opportunity.category.length > 2 && (
+                  <Badge variant="secondary" className="shadow-sm">+{opportunity.category.length - 2}</Badge>
+                )}
+              </>
+            ) : (
+              <Badge className="" variant={opportunity.category === 'Career Advice' || opportunity.category === 'Study Abroad' ? 'secondary' : 'default'}>{opportunity.category}</Badge>
+            )}
+          </div>
         </div>
       </Link>
       <CardHeader>
@@ -43,8 +58,8 @@ export function OpportunityCard({ opportunity }: OpportunityCardProps) {
       <CardContent className="flex-grow text-sm text-muted-foreground">
         <p className="font-semibold text-foreground mb-2">{opportunity.organization}</p>
         <div className="flex items-start gap-2 mb-2">
-            <MapPin className="w-4 h-4 mt-0.5 shrink-0"/>
-            <span>{opportunity.location}, {opportunity.country}</span>
+          <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
+          <span>{opportunity.location}, {opportunity.country}</span>
         </div>
         <p className="line-clamp-3">{opportunity.summary}</p>
       </CardContent>

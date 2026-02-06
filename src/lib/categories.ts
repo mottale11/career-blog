@@ -63,6 +63,29 @@ export async function createCategory(data: { name: string; parent_id?: string | 
     }
 }
 
+export async function updateCategory(id: string, data: { name: string; parent_id?: string | null; description?: string }) {
+    const supabase = await createAdminClient();
+    const slug = slugify(data.name);
+
+    const { error } = await supabase
+        .from('categories')
+        .update({
+            name: data.name,
+            slug: slug,
+            parent_id: data.parent_id || null,
+            description: data.description
+        })
+        .eq('id', id);
+
+    if (error) {
+        console.error('Error updating category:', error);
+        throw new Error(error.message);
+    }
+
+    revalidatePath('/admin/taxonomies');
+    revalidatePath('/admin/opportunities/new');
+}
+
 export async function deleteCategory(id: string) {
     const supabase = await createAdminClient();
     const { error } = await supabase

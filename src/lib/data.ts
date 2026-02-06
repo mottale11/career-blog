@@ -39,17 +39,42 @@ export const categories: {
 },
   ];
 
-export async function getOpportunities(category?: Category) {
+export async function getOpportunities(filters?: {
+  category?: string;
+  location?: string;
+  industry?: string;
+  remote?: string;
+  level?: string;
+}) {
   let query = supabase
     .from('opportunities')
     .select('*')
     .eq('status', 'published')
-    .order('deadline', { ascending: false }); // Sort by newest deadline (furthest in future?) or just created_at? 
-  // Original code sorted by deadline desc: new Date(b.deadline) - new Date(a.deadline)
-  // That puts "later" deadlines first. Let's stick to that.
+    .order('deadline', { ascending: false });
 
-  if (category) {
-    query = query.eq('category', category);
+  if (filters?.category && filters.category !== 'all') {
+    query = query.contains('category', [filters.category]);
+  }
+
+  if (filters?.location && filters.location !== 'all') {
+    query = query.eq('location', filters.location);
+  }
+
+  if (filters?.industry && filters.industry !== 'all') {
+    query = query.eq('industry', filters.industry);
+  }
+
+  if (filters?.remote && filters.remote !== 'all') {
+    // Assuming 'remote' in DB is a boolean, but let's handle string inputs from URL
+    if (filters.remote === 'true') {
+      query = query.eq('is_remote', true);
+    } else if (filters.remote === 'false') {
+      query = query.eq('is_remote', false);
+    }
+  }
+
+  if (filters?.level && filters.level !== 'all') {
+    query = query.eq('level', filters.level);
   }
 
   const { data, error } = await query;
