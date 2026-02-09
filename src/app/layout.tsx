@@ -67,7 +67,7 @@ export default function RootLayout({
         </noscript>
         {/* End Google Tag Manager (noscript) */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-YEJ7E7K9LC"
+          src="https://www.googletagmanager.com/gtag/js?id=G-BVQEH3ESP5"
           strategy="afterInteractive"
         />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -76,7 +76,7 @@ export default function RootLayout({
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
-            gtag('config', 'G-YEJ7E7K9LC');
+            gtag('config', 'G-BVQEH3ESP5');
           `}
         </Script>
         <ConditionalLayout>{children}</ConditionalLayout>
