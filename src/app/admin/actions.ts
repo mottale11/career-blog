@@ -39,9 +39,27 @@ export async function createOpportunity(data: any) {
     console.log('createOpportunity User:', user?.id, user?.email);
     if (userError) console.error('Error fetching user:', userError);
 
+    let baseSlug = data.slug || slugify(data.title);
+    let finalSlug = baseSlug;
+    let counter = 1;
+
+    while (true) {
+        const { data: existing } = await supabase
+            .from('opportunities')
+            .select('id')
+            .eq('slug', finalSlug);
+
+        if (!existing || existing.length === 0) {
+            break;
+        }
+
+        finalSlug = `${baseSlug}-${counter}`;
+        counter++;
+    }
+
     const { error } = await supabase.from('opportunities').insert({
         title: data.title,
-        slug: data.slug || slugify(data.title),
+        slug: finalSlug,
         category: data.category, // Now an array
         // category_id: categoryId, // Removing single category ID logic
         organization: data.organization,
@@ -176,14 +194,13 @@ export async function deleteOpportunity(id: string) {
     revalidatePath('/'); // Homepage
     if (opportunity?.slug) {
         revalidatePath(`/opportunity/${opportunity.slug}`);
-    }
-    if (opportunity?.category) {
-        // Assuming category pages are like /jobs, /scholarships etc. based on the category name
-        // If category is a slug, we use it directly. If it's a name like "Jobs", we might need to slugify it or if the routes are /jobs.
-        // Based on data.ts, categories are simple strings.
-        // Let's safe bet revalidate everything or try to guess. The category links component uses logic.
-        // For now, revalidating the specific opportunity and homepage is the most critical.
-        // We can also try to revalidate the category path if it matches the category name lowercased.
-        revalidatePath(`/${opportunity.category.toLowerCase()}`);
+        if (opportunity?.category && Array.isArray(opportunity.category)) {
+            // Revalidate each category page
+            opportunity.category.forEach((cat: string) => {
+                revalidatePath(`/${cat.toLowerCase()}`);
+            });
+        } else if (typeof opportunity?.category === 'string') {
+            revalidatePath(`/${(opportunity.category as string).toLowerCase()}`);
+        }
     }
 }

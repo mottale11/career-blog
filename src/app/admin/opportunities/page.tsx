@@ -1,4 +1,4 @@
-import { getOpportunities } from "@/lib/data";
+import { getAllOpportunities } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -14,7 +14,7 @@ import { formatDate } from "@/lib/utils";
 import { OpportunityActions } from "./_components/opportunity-actions";
 
 export default async function AdminOpportunitiesPage() {
-  const opportunities = await getOpportunities();
+  const opportunities = await getAllOpportunities();
 
   return (
     <div>

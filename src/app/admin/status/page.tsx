@@ -1,8 +1,8 @@
-import { getOpportunities } from "@/lib/data";
+import { getAllOpportunities } from "@/lib/data";
 import { StatusTabs } from "./_components/status-tabs";
 
 export default async function AdminStatusPage() {
-    const opportunities = await getOpportunities();
+    const opportunities = await getAllOpportunities();
 
     return (
         <div>
