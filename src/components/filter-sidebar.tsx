@@ -14,11 +14,6 @@ const locations = ['Kenya', 'Uganda', 'Tanzania', 'Rwanda', 'Ethiopia', 'South A
 const levels = ['Undergraduate', 'Graduate', 'Postgraduate', 'Professional', 'Internship', 'All Levels'];
 const industries = ['Technology', 'Finance', 'Healthcare', 'Education', 'Agriculture', 'Engineering', 'Creative', 'Non-profit'];
 const categories = ['Jobs', 'Scholarships', 'Internships', 'Fellowships', 'Grants', 'Career Advice', 'Study Abroad'];
-const remoteOptions = [
-  { label: 'Yes', value: 'true' },
-  { label: 'No', value: 'false' },
-  { label: 'Any', value: 'all' },
-];
 
 export function FilterSidebar() {
   const router = useRouter();
@@ -103,25 +98,6 @@ export function FilterSidebar() {
               {industries.map((ind) => (
                 <SelectItem key={ind} value={ind}>
                   {ind}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Remote</label>
-          <Select
-            onValueChange={(value) => handleFilterChange('remote', value)}
-            defaultValue={searchParams.get('remote') || 'all'}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Remote?" />
-            </SelectTrigger>
-            <SelectContent>
-              {remoteOptions.map((opt) => (
-                <SelectItem key={opt.value} value={opt.value}>
-                  {opt.label}
                 </SelectItem>
               ))}
             </SelectContent>

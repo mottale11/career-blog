@@ -3,6 +3,8 @@ import { Hero } from '@/components/hero';
 import { NewsletterForm } from '@/components/newsletter-form';
 import { OpportunityListSection } from '@/components/opportunity-list-section';
 import { getOpportunities } from '@/lib/data';
+import { getIndustries } from '@/lib/industries';
+import { getFields } from '@/lib/fields';
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
@@ -16,11 +18,15 @@ export default async function Home(props: {
     category: typeof searchParams.category === 'string' ? searchParams.category : undefined,
     location: typeof searchParams.location === 'string' ? searchParams.location : undefined,
     industry: typeof searchParams.industry === 'string' ? searchParams.industry : undefined,
-    remote: typeof searchParams.remote === 'string' ? searchParams.remote : undefined,
+    field: typeof searchParams.field === 'string' ? searchParams.field : undefined,
     level: typeof searchParams.level === 'string' ? searchParams.level : undefined,
   };
 
-  const allOpportunities = await getOpportunities(filters);
+  const [allOpportunities, industriesList, fieldsList] = await Promise.all([
+    getOpportunities(filters),
+    getIndustries(),
+    getFields(),
+  ]);
   const featuredOpportunities = allOpportunities.filter((o) => o.featured);
   const trendingOpportunities = allOpportunities.filter((o) => o.trending);
 
@@ -28,7 +34,7 @@ export default async function Home(props: {
     <div className="flex flex-col items-center">
       <Hero />
       <div className="container mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <FilterBar />
+        <FilterBar industriesList={industriesList} fieldsList={fieldsList} />
         <OpportunityListSection
           title="Hiring Now"
           opportunities={featuredOpportunities}

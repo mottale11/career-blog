@@ -192,17 +192,36 @@ export function TaxonomyManager({
                                         No {title.toLowerCase()} found. Create one to get started.
                                     </TableCell>
                                 </TableRow>
-                            ) : (
-                                items.map((item) => (
-                                    <TableRow key={item.id}>
+                            ) : (() => {
+                                // Build grouped rows: parents first, children directly below their parent
+                                const parents = items
+                                    .filter(i => !i.parent_id)
+                                    .sort((a, b) => a.name.localeCompare(b.name));
+                                const orphans = items
+                                    .filter(i => i.parent_id && !items.find(p => p.id === i.parent_id))
+                                    .sort((a, b) => a.name.localeCompare(b.name));
+
+                                const rows: React.ReactNode[] = [];
+
+                                // Render a row for a single item
+                                const renderRow = (item: TaxonomyItem, isChild: boolean) => (
+                                    <TableRow key={item.id} className={isChild ? 'bg-muted/20' : ''}>
                                         <TableCell className="font-medium">
-                                            {item.parent_id && <span className="text-muted-foreground mr-2">↳</span>}
-                                            {item.name}
+                                            {isChild ? (
+                                                <span className="inline-flex items-center gap-1 pl-6">
+                                                    <span className="text-muted-foreground">↳</span>
+                                                    <span className="text-sm">{item.name}</span>
+                                                </span>
+                                            ) : (
+                                                <span className="font-semibold">{item.name}</span>
+                                            )}
                                         </TableCell>
-                                        <TableCell>{item.slug}</TableCell>
+                                        <TableCell className={isChild ? 'text-sm text-muted-foreground' : ''}>
+                                            {item.slug}
+                                        </TableCell>
                                         <TableCell>
-                                            {item.parent_id
-                                                ? items.find(i => i.id === item.parent_id)?.name
+                                            {isChild
+                                                ? items.find(p => p.id === item.parent_id)?.name
                                                 : <Badge variant="secondary">Top Level</Badge>
                                             }
                                         </TableCell>
@@ -215,8 +234,22 @@ export function TaxonomyManager({
                                             </Button>
                                         </TableCell>
                                     </TableRow>
-                                ))
-                            )}
+                                );
+
+                                // Render each parent then its children
+                                parents.forEach(parent => {
+                                    rows.push(renderRow(parent, false));
+                                    const children = items
+                                        .filter(i => i.parent_id === parent.id)
+                                        .sort((a, b) => a.name.localeCompare(b.name));
+                                    children.forEach(child => rows.push(renderRow(child, true)));
+                                });
+
+                                // Render orphaned children at the end (parent was deleted)
+                                orphans.forEach(orphan => rows.push(renderRow(orphan, false)));
+
+                                return rows;
+                            })()}
                         </TableBody>
                     </Table>
                 </div>

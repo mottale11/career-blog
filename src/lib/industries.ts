@@ -14,18 +14,23 @@ export interface Industry {
 }
 
 export async function getIndustries() {
-    const supabase = await createClient();
-    const { data, error } = await supabase
-        .from('industries')
-        .select('*')
-        .order('name');
+    try {
+        const supabase = await createAdminClient();
+        const { data, error } = await supabase
+            .from('industries')
+            .select('*')
+            .order('name');
 
-    if (error) {
-        console.error('Error fetching industries:', error);
-        return [];
+        if (error) {
+            console.error('Error fetching industries:', error);
+            return [] as Industry[];
+        }
+
+        return data as Industry[];
+    } catch (error) {
+        console.error('Failed to fetch industries:', error);
+        return [] as Industry[];
     }
-
-    return data as Industry[];
 }
 
 export async function createIndustry(data: { name: string; parent_id?: string | null; description?: string }) {

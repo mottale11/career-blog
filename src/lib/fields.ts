@@ -14,18 +14,23 @@ export interface Field {
 }
 
 export async function getFields() {
-    const supabase = await createClient();
-    const { data, error } = await supabase
-        .from('fields')
-        .select('*')
-        .order('name');
+    try {
+        const supabase = await createAdminClient();
+        const { data, error } = await supabase
+            .from('fields')
+            .select('*')
+            .order('name');
 
-    if (error) {
-        console.error('Error fetching fields:', error);
-        return [];
+        if (error) {
+            console.error('Error fetching fields:', error);
+            return [] as Field[];
+        }
+
+        return data as Field[];
+    } catch (error) {
+        console.error('Failed to fetch fields:', error);
+        return [] as Field[];
     }
-
-    return data as Field[];
 }
 
 export async function createField(data: { name: string; parent_id?: string | null; description?: string }) {

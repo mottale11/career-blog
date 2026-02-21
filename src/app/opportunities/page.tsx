@@ -10,7 +10,6 @@ type SearchParams = {
   country?: string;
   level?: string;
   industry?: string;
-  remote?: string;
 };
 
 export default async function OpportunitiesPage({
@@ -39,7 +38,6 @@ async function OpportunityGrid({ searchParams }: { searchParams: SearchParams })
     location: searchParams.country,
     level: searchParams.level,
     industry: searchParams.industry,
-    remote: searchParams.remote,
   };
 
   let opportunities = await getOpportunities(filters);
@@ -62,7 +60,7 @@ async function OpportunityGrid({ searchParams }: { searchParams: SearchParams })
     <div>
       <h1 className="text-3xl font-bold font-headline mb-6">{title}</h1>
       {opportunities.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {opportunities.map((opportunity) => (
             <OpportunityCard key={opportunity.id} opportunity={opportunity} />
           ))}
@@ -83,21 +81,21 @@ function OpportunityGridSkeleton() {
   return (
     <div>
       <div className="h-9 w-2/3 bg-muted rounded animate-pulse mb-6" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[...Array(6)].map((_, i) => (
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        {[...Array(8)].map((_, i) => (
           <div key={i} className="bg-card border rounded-lg shadow-sm">
-            <div className="h-48 w-full bg-muted animate-pulse" />
-            <div className="p-6 space-y-4">
-              <div className="h-5 w-3/4 bg-muted rounded animate-pulse" />
-              <div className="h-4 w-1/2 bg-muted rounded animate-pulse" />
-              <div className="space-y-2">
-                <div className="h-4 w-full bg-muted rounded animate-pulse" />
-                <div className="h-4 w-5/6 bg-muted rounded animate-pulse" />
+            <div className="h-32 w-full bg-muted animate-pulse" />
+            <div className="p-4 space-y-3">
+              <div className="h-4 w-3/4 bg-muted rounded animate-pulse" />
+              <div className="h-3 w-1/2 bg-muted rounded animate-pulse" />
+              <div className="space-y-1">
+                <div className="h-3 w-full bg-muted rounded animate-pulse" />
+                <div className="h-3 w-5/6 bg-muted rounded animate-pulse" />
               </div>
             </div>
-            <div className="px-6 pb-4 border-t pt-4 flex justify-between items-center">
-              <div className="h-4 w-1/3 bg-muted rounded animate-pulse" />
-              <div className="h-8 w-1/4 bg-muted rounded animate-pulse" />
+            <div className="px-4 pb-3 border-t pt-3 flex justify-between items-center">
+              <div className="h-3 w-1/3 bg-muted rounded animate-pulse" />
+              <div className="h-6 w-1/4 bg-muted rounded animate-pulse" />
             </div>
           </div>
         ))}

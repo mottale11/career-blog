@@ -9,19 +9,17 @@ import {
     SelectTrigger,
     SelectValue,
 } from './ui/select';
-import { categories } from '@/lib/data';
 
-// Extended lists for filters
+// Static lists
 const locations = ['Kenya', 'Uganda', 'Tanzania', 'Rwanda', 'Ethiopia', 'South Africa', 'Nigeria', 'Ghana', 'USA', 'UK', 'Australia', 'Ireland', 'Global'];
 const levels = ['Undergraduate', 'Graduate', 'Postgraduate', 'Professional', 'Internship', 'All Levels'];
-const industries = ['Technology', 'Finance', 'Healthcare', 'Education', 'Agriculture', 'Engineering', 'Creative', 'Non-profit'];
-const remoteOptions = [
-    { label: 'Yes', value: 'true' },
-    { label: 'No', value: 'false' },
-    { label: 'Any', value: 'all' },
-];
 
-export function FilterBar() {
+interface FilterBarProps {
+    industriesList?: { id: string; name: string }[];
+    fieldsList?: { id: string; name: string }[];
+}
+
+export function FilterBar({ industriesList = [], fieldsList = [] }: FilterBarProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -46,7 +44,7 @@ export function FilterBar() {
 
     return (
         <section className="bg-muted/30 p-4 rounded-lg border mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* Location Filter */}
                 <div className="space-y-1">
                     <label className="text-xs font-medium text-muted-foreground">Location</label>
@@ -68,21 +66,21 @@ export function FilterBar() {
                     </Select>
                 </div>
 
-                {/* Field/Category Filter */}
+                {/* Field Filter */}
                 <div className="space-y-1">
                     <label className="text-xs font-medium text-muted-foreground">Field</label>
                     <Select
-                        onValueChange={(value) => handleFilterChange('category', value)}
-                        defaultValue={searchParams.get('category') || 'all'}
+                        onValueChange={(value) => handleFilterChange('field', value)}
+                        defaultValue={searchParams.get('field') || 'all'}
                     >
                         <SelectTrigger className="w-full bg-background">
-                            <SelectValue placeholder="Category" />
+                            <SelectValue placeholder="Field" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="all">All Fields</SelectItem>
-                            {categories.map((cat) => (
-                                <SelectItem key={cat.name} value={cat.name}>
-                                    {cat.name}
+                            {fieldsList.map((f) => (
+                                <SelectItem key={f.id} value={f.name}>
+                                    {f.name}
                                 </SelectItem>
                             ))}
                         </SelectContent>
@@ -101,29 +99,9 @@ export function FilterBar() {
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="all">All Industries</SelectItem>
-                            {industries.map((ind) => (
-                                <SelectItem key={ind} value={ind}>
-                                    {ind}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                </div>
-
-                {/* Remote Filter */}
-                <div className="space-y-1">
-                    <label className="text-xs font-medium text-muted-foreground">Remote</label>
-                    <Select
-                        onValueChange={(value) => handleFilterChange('remote', value)}
-                        defaultValue={searchParams.get('remote') || 'all'}
-                    >
-                        <SelectTrigger className="w-full bg-background">
-                            <SelectValue placeholder="Remote" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {remoteOptions.map((opt) => (
-                                <SelectItem key={opt.value} value={opt.value}>
-                                    {opt.label}
+                            {industriesList.map((ind) => (
+                                <SelectItem key={ind.id} value={ind.name}>
+                                    {ind.name}
                                 </SelectItem>
                             ))}
                         </SelectContent>

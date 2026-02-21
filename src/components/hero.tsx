@@ -1,13 +1,11 @@
 'use client';
 import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export function Hero() {
-  const heroImage = PlaceHolderImages.find((img) => img.id === 'hero-background');
   const router = useRouter();
 
   const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
@@ -19,16 +17,14 @@ export function Hero() {
 
   return (
     <section className="relative w-full h-[50vh] min-h-[400px] md:h-[60vh] flex items-center justify-center text-white">
-      {heroImage && (
-        <Image
-          src={heroImage.imageUrl}
-          alt={heroImage.description}
-          fill
-          className="object-cover"
-          priority
-          data-ai-hint={heroImage.imageHint}
-        />
-      )}
+      <Image
+        src="/hero_image.png"
+        alt="Hero background image"
+        fill
+        className="object-cover"
+        priority
+        data-ai-hint="Hero background image for career opportunities"
+      />
       <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 text-center px-4 max-w-3xl">
         <h1 className="text-4xl md:text-6xl font-extrabold font-headline tracking-tight">

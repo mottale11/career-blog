@@ -1,8 +1,7 @@
-import { getOpportunities } from '@/lib/data';
+import { getOpportunities, getCategories } from '@/lib/data';
 import { OpportunityCard } from '@/components/opportunity-card';
 import { slugify } from '@/lib/utils';
 import type { Category } from '@/lib/types';
-import { categories } from '@/lib/data';
 import { notFound } from 'next/navigation';
 
 type CategoryPageProps = {
@@ -12,28 +11,30 @@ type CategoryPageProps = {
 };
 
 export async function generateStaticParams() {
-  return categories.map((category) => ({
-    category: slugify(category.name),
+  const categories = await getCategories();
+  return categories.map((category: Category) => ({
+    category: slugify(category),
   }));
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const resolvedParams = await params;
+  const categories = await getCategories();
   const categoryName = categories.find(
-    (c) => slugify(c.name) === resolvedParams.category
-  )?.name;
+    (c: Category) => slugify(c) === resolvedParams.category
+  );
 
   if (!categoryName) {
     notFound();
   }
 
-  const opportunities = await getOpportunities(categoryName);
+  const opportunities = await getOpportunities({ category: categoryName });
 
   return (
     <div>
       <h1 className="text-4xl font-bold font-headline mb-8">{categoryName}</h1>
       {opportunities.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {opportunities.map((opportunity) => (
             <OpportunityCard key={opportunity.id} opportunity={opportunity} />
           ))}

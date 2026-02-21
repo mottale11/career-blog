@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
-import { getAllOpportunities } from '@/lib/data';
-import { categories } from '@/lib/data';
+import { getAllOpportunities, getCategories } from '@/lib/data';
 import { slugify } from '@/lib/utils';
+import type { Category } from '@/lib/types';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = 'https://www.jobslot.site';
@@ -18,8 +18,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }));
 
     // Category pages
-    const categoryRoutes = categories.map((category) => ({
-        url: `${baseUrl}/opportunities/${slugify(category.name)}`,
+    const categories = await getCategories();
+    const categoryRoutes = categories.map((category: Category) => ({
+        url: `${baseUrl}/opportunities/${slugify(category)}`,
         lastModified: new Date(),
         changeFrequency: 'daily' as const,
         priority: 0.8,

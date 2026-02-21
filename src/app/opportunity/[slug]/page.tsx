@@ -56,19 +56,28 @@ export async function generateMetadata({ params }: OpportunityPageProps): Promis
     };
   }
 
+  // Provide a fallback image if the image URL is empty or invalid
+  const imageUrl = opportunity.image && 
+    opportunity.image.trim() !== '' && 
+    !opportunity.image.includes('data:image/png;base64,') &&
+    opportunity.image !== 'null' &&
+    opportunity.image !== 'undefined'
+    ? opportunity.image 
+    : `https://picsum.photos/seed/${opportunity.slug}/800/400`;
+
   return {
     title: opportunity.metaTitle || opportunity.title,
     description: opportunity.metaDescription || opportunity.summary || opportunity.description.substring(0, 160),
     openGraph: {
       title: opportunity.metaTitle || opportunity.title,
       description: opportunity.metaDescription || opportunity.summary || opportunity.description.substring(0, 160),
-      images: [opportunity.image],
+      images: [imageUrl],
     },
     twitter: {
       card: 'summary_large_image',
       title: opportunity.metaTitle || opportunity.title,
       description: opportunity.metaDescription || opportunity.summary || opportunity.description.substring(0, 160),
-      images: [opportunity.image],
+      images: [imageUrl],
     },
   };
 }
@@ -80,6 +89,15 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
   if (!opportunity) {
     notFound();
   }
+
+  // Provide a fallback image if the image URL is empty or invalid
+  const imageUrl = opportunity.image && 
+    opportunity.image.trim() !== '' && 
+    !opportunity.image.includes('data:image/png;base64,') &&
+    opportunity.image !== 'null' &&
+    opportunity.image !== 'undefined'
+    ? opportunity.image 
+    : `https://picsum.photos/seed/${opportunity.slug}/800/400`;
 
   // Use the first category for similar opportunities recommendation
   const primaryCategory = Array.isArray(opportunity.category) ? opportunity.category[0] : opportunity.category;
@@ -95,12 +113,12 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
           <article>
             <div className="relative h-64 md:h-96 w-full rounded-lg overflow-hidden mb-8">
               <Image
-                src={opportunity.image}
+                src={imageUrl}
                 alt={opportunity.title}
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 67vw"
-                data-ai-hint={opportunity.imageHint}
+                data-ai-hint={opportunity.imageHint || `Image for ${opportunity.title}`}
                 priority
               />
             </div>
@@ -250,7 +268,7 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
           >
             <CarouselContent>
               {similarOpportunities.map((op) => (
-                <CarouselItem key={op.id} className="md:basis-1/2 lg:basis-1/3">
+                <CarouselItem key={op.id} className="sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
                   <div className="p-1 h-full">
                     <OpportunityCard opportunity={op} />
                   </div>
