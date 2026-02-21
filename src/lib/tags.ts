@@ -9,7 +9,7 @@ export interface TagWithCount {
 }
 
 export async function getTags(): Promise<TagWithCount[]> {
-    const supabase = await createClient();
+    const supabase = await createAdminClient();
     const { data: opportunities, error } = await supabase
         .from('opportunities')
         .select('tags');
@@ -39,7 +39,7 @@ export async function getTags(): Promise<TagWithCount[]> {
 }
 
 export async function deleteTag(tagName: string) {
-    const supabase = await createClient();
+    const supabase = await createAdminClient();
 
     // 1. Fetch opportunities that contain this tag
     // Supabase contains operator for array: tags @> {tagName} 

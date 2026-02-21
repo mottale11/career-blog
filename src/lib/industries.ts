@@ -35,7 +35,7 @@ export async function getIndustries() {
 
 export async function createIndustry(data: { name: string; parent_id?: string | null; description?: string }) {
     console.log('createIndustry called with:', data);
-    const supabase = await createClient(); // Or createAdminClient if restricted
+    const supabase = await createAdminClient();
     const slug = slugify(data.name);
 
     const { data: newIndustry, error } = await supabase

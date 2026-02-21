@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getAllOpportunities } from "@/lib/data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Briefcase, Star, TrendingUp, ArchiveX } from "lucide-react";

@@ -35,7 +35,7 @@ export async function getFields() {
 
 export async function createField(data: { name: string; parent_id?: string | null; description?: string }) {
     console.log('createField called with:', data);
-    const supabase = await createClient();
+    const supabase = await createAdminClient();
     const slug = slugify(data.name);
 
     const { data: newField, error } = await supabase

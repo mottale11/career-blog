@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getAllOpportunities } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import {
