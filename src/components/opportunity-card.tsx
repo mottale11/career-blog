@@ -19,13 +19,18 @@ type OpportunityCardProps = {
 
 export function OpportunityCard({ opportunity }: OpportunityCardProps) {
   // Provide a fallback image if image URL is empty, invalid, or problematic
-  const imageUrl = opportunity.image && 
-    opportunity.image.trim() !== '' && 
+  const imageUrl = opportunity.image &&
+    opportunity.image.trim() !== '' &&
     !opportunity.image.includes('data:image/png;base64,') &&
     opportunity.image !== 'null' &&
     opportunity.image !== 'undefined'
-    ? opportunity.image 
+    ? opportunity.image
     : `https://picsum.photos/seed/${opportunity.slug}/400/250`;
+
+  // Use unoptimized for external URLs that might not be in the whitelist
+  const isSupabaseUrl = imageUrl.includes('supabase.co');
+  const isKnownHost = imageUrl.includes('picsum.photos') || imageUrl.includes('unsplash.com') || imageUrl.includes('placehold.co');
+  const shouldUnoptimize = !isSupabaseUrl && !isKnownHost;
 
   return (
     <Card className="flex flex-col h-full overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 text-sm">
@@ -38,7 +43,7 @@ export function OpportunityCard({ opportunity }: OpportunityCardProps) {
             className="object-cover"
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
             data-ai-hint={opportunity.imageHint || `Image for ${opportunity.title}`}
-            unoptimized={false}
+            unoptimized={shouldUnoptimize}
           />
           <div className="absolute top-2 right-2 flex flex-col items-end gap-1">
             {Array.isArray(opportunity.category) ? (
