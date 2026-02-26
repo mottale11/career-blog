@@ -57,12 +57,12 @@ export async function generateMetadata({ params }: OpportunityPageProps): Promis
   }
 
   // Provide a fallback image if the image URL is empty or invalid
-  const imageUrl = opportunity.image && 
-    opportunity.image.trim() !== '' && 
+  const imageUrl = opportunity.image &&
+    opportunity.image.trim() !== '' &&
     !opportunity.image.includes('data:image/png;base64,') &&
     opportunity.image !== 'null' &&
     opportunity.image !== 'undefined'
-    ? opportunity.image 
+    ? opportunity.image
     : `https://picsum.photos/seed/${opportunity.slug}/800/400`;
 
   return {
@@ -91,12 +91,12 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
   }
 
   // Provide a fallback image if the image URL is empty or invalid
-  const imageUrl = opportunity.image && 
-    opportunity.image.trim() !== '' && 
+  const imageUrl = opportunity.image &&
+    opportunity.image.trim() !== '' &&
     !opportunity.image.includes('data:image/png;base64,') &&
     opportunity.image !== 'null' &&
     opportunity.image !== 'undefined'
-    ? opportunity.image 
+    ? opportunity.image
     : `https://picsum.photos/seed/${opportunity.slug}/800/400`;
 
   // Use the first category for similar opportunities recommendation
@@ -153,6 +153,12 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
                 <GraduationCap className="w-4 h-4" />
                 <span>{opportunity.level}</span>
               </div>
+              {opportunity.created_at && (
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  <span>Posted: {formatDate(opportunity.created_at)}</span>
+                </div>
+              )}
             </div>
 
             <script

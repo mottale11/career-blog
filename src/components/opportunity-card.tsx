@@ -81,7 +81,7 @@ export function OpportunityCard({ opportunity }: OpportunityCardProps) {
       <CardFooter className="flex justify-between items-center text-xs border-t pt-3">
         <div className="flex items-center gap-1 text-muted-foreground">
           <Calendar className="w-3 h-3" />
-          <span>{formatDate(opportunity.deadline)}</span>
+          <span>Posted: {formatDate(opportunity.created_at ?? '')}</span>
         </div>
         <Button asChild variant="ghost" size="sm">
           <Link href={`/opportunity/${opportunity.slug}`}>
