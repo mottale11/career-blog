@@ -83,6 +83,9 @@ export async function createOpportunity(data: any) {
         status: data.status,
         "metaTitle": data.metaTitle,
         "metaDescription": data.metaDescription,
+        salaryMin: data.salaryMin ?? null,
+        salaryMax: data.salaryMax ?? null,
+        salaryPeriod: data.salaryPeriod ?? null,
     });
 
     if (error) {
@@ -129,6 +132,9 @@ export async function updateOpportunity(id: string, data: any) {
         status: data.status,
         "metaTitle": data.metaTitle,
         "metaDescription": data.metaDescription,
+        salaryMin: data.salaryMin ?? null,
+        salaryMax: data.salaryMax ?? null,
+        salaryPeriod: data.salaryPeriod ?? null,
     }).eq('id', id);
 
     if (error) {

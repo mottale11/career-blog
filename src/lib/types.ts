@@ -44,6 +44,9 @@ export type Opportunity = {
   fields: string[];
   status: OpportunityStatus;
   created_at?: string;
+  salaryMin?: number | null;
+  salaryMax?: number | null;
+  salaryPeriod?: 'HOUR' | 'DAY' | 'WEEK' | 'MONTH' | 'YEAR' | null;
   metaTitle?: string;
   metaDescription?: string;
 };

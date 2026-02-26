@@ -34,7 +34,7 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon, Save } from 'lucide-react';
+import { CalendarIcon, DollarSign, Save } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import type { Opportunity, Level } from '@/lib/types';
@@ -50,6 +50,8 @@ import { RichTextEditor } from '@/components/ui/rich-text-editor';
 
 const countries = ['Kenya', 'Uganda', 'Tanzania', 'Rwanda', 'Ethiopia', 'South Africa', 'Nigeria', 'Ghana', 'USA', 'UK', 'Australia', 'Ireland', 'Global'];
 const levels: Level[] = ['Undergraduate', 'Graduate', 'Postgraduate', 'Professional', 'Internship', 'All Levels'];
+
+const salaryPeriods = ['HOUR', 'DAY', 'WEEK', 'MONTH', 'YEAR'] as const;
 
 const opportunitySchema = z.object({
     title: z.string().min(2, { message: 'Title must be at least 2 characters.' }),
@@ -71,6 +73,9 @@ const opportunitySchema = z.object({
     tags: z.string(),
     image: z.string().url(),
     imageHint: z.string(),
+    salaryMin: z.coerce.number().nullable().optional(),
+    salaryMax: z.coerce.number().nullable().optional(),
+    salaryPeriod: z.enum(salaryPeriods).nullable().optional(),
     metaTitle: z.string().optional(),
     metaDescription: z.string().optional(),
 });
@@ -109,6 +114,9 @@ export function OpportunityForm({ opportunity, categories, industries, fields }:
         tags: opportunity?.tags.join(', ') ?? '',
         image: opportunity?.image ?? 'https://picsum.photos/seed/new-post/600/400',
         imageHint: opportunity?.imageHint ?? '',
+        salaryMin: opportunity?.salaryMin ?? null,
+        salaryMax: opportunity?.salaryMax ?? null,
+        salaryPeriod: opportunity?.salaryPeriod ?? null,
         metaTitle: opportunity?.metaTitle ?? '',
         metaDescription: opportunity?.metaDescription ?? '',
     };
@@ -586,6 +594,77 @@ export function OpportunityForm({ opportunity, categories, industries, fields }:
                                         <FormControl>
                                             <Input placeholder="https://jobs.example.com/apply/123" {...field} />
                                         </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2"><DollarSign className="w-4 h-4" />Salary</CardTitle>
+                            <CardDescription>Optional. Leave blank if not applicable.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="grid grid-cols-2 gap-3">
+                                <FormField
+                                    control={form.control}
+                                    name="salaryMin"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Min Amount</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="number"
+                                                    placeholder="e.g. 20"
+                                                    {...field}
+                                                    value={field.value ?? ''}
+                                                    onChange={e => field.onChange(e.target.value === '' ? null : e.target.valueAsNumber)}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="salaryMax"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Max Amount</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="number"
+                                                    placeholder="e.g. 50"
+                                                    {...field}
+                                                    value={field.value ?? ''}
+                                                    onChange={e => field.onChange(e.target.value === '' ? null : e.target.valueAsNumber)}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <FormField
+                                control={form.control}
+                                name="salaryPeriod"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Pay Period</FormLabel>
+                                        <Select
+                                            onValueChange={val => field.onChange(val === 'none' ? null : val)}
+                                            value={field.value ?? 'none'}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger><SelectValue placeholder="Select period" /></SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <SelectItem value="none">— None —</SelectItem>
+                                                {salaryPeriods.map(p => <SelectItem key={p} value={p}>per {p.charAt(0) + p.slice(1).toLowerCase()}</SelectItem>)}
+                                            </SelectContent>
+                                        </Select>
                                         <FormMessage />
                                     </FormItem>
                                 )}

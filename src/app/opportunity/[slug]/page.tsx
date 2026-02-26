@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import {
   Building,
   Calendar,
+  DollarSign,
   Globe,
   GraduationCap,
   Link as LinkIcon,
@@ -157,6 +158,17 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
                   <span>Posted: {formatDate(opportunity.created_at)}</span>
+                </div>
+              )}
+              {opportunity.salaryMin != null && (
+                <div className="flex items-center gap-2">
+                  <DollarSign className="w-4 h-4" />
+                  <span>
+                    {opportunity.salaryMax != null && opportunity.salaryMax !== opportunity.salaryMin
+                      ? `$${opportunity.salaryMin.toLocaleString()} – $${opportunity.salaryMax.toLocaleString()}`
+                      : `$${opportunity.salaryMin.toLocaleString()}`}
+                    {opportunity.salaryPeriod ? ` / ${opportunity.salaryPeriod.charAt(0) + opportunity.salaryPeriod.slice(1).toLowerCase()}` : ''}
+                  </span>
                 </div>
               )}
             </div>
