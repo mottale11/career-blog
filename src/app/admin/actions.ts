@@ -86,6 +86,7 @@ export async function createOpportunity(data: any) {
         salaryMin: data.salaryMin ?? null,
         salaryMax: data.salaryMax ?? null,
         salaryPeriod: data.salaryPeriod ?? null,
+        employmentType: data.employmentType ?? [],
     });
 
     if (error) {
@@ -135,6 +136,7 @@ export async function updateOpportunity(id: string, data: any) {
         salaryMin: data.salaryMin ?? null,
         salaryMax: data.salaryMax ?? null,
         salaryPeriod: data.salaryPeriod ?? null,
+        employmentType: data.employmentType ?? [],
     }).eq('id', id);
 
     if (error) {

@@ -76,6 +76,7 @@ const opportunitySchema = z.object({
     salaryMin: z.coerce.number().nullable().optional(),
     salaryMax: z.coerce.number().nullable().optional(),
     salaryPeriod: z.enum(salaryPeriods).nullable().optional(),
+    employmentType: z.array(z.string()).nullable().optional(),
     metaTitle: z.string().optional(),
     metaDescription: z.string().optional(),
 });
@@ -117,6 +118,7 @@ export function OpportunityForm({ opportunity, categories, industries, fields }:
         salaryMin: opportunity?.salaryMin ?? null,
         salaryMax: opportunity?.salaryMax ?? null,
         salaryPeriod: opportunity?.salaryPeriod ?? null,
+        employmentType: opportunity?.employmentType ?? [],
         metaTitle: opportunity?.metaTitle ?? '',
         metaDescription: opportunity?.metaDescription ?? '',
     };
@@ -665,6 +667,34 @@ export function OpportunityForm({ opportunity, categories, industries, fields }:
                                                 {salaryPeriods.map(p => <SelectItem key={p} value={p}>per {p.charAt(0) + p.slice(1).toLowerCase()}</SelectItem>)}
                                             </SelectContent>
                                         </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="employmentType"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Employment Type</FormLabel>
+                                        <FormControl>
+                                            <MultiSelect
+                                                selected={field.value || []}
+                                                options={[
+                                                    { label: 'Full Time', value: 'FULL_TIME' },
+                                                    { label: 'Part Time', value: 'PART_TIME' },
+                                                    { label: 'Contractor', value: 'CONTRACTOR' },
+                                                    { label: 'Temporary', value: 'TEMPORARY' },
+                                                    { label: 'Intern', value: 'INTERN' },
+                                                    { label: 'Volunteer', value: 'VOLUNTEER' },
+                                                    { label: 'Per Diem', value: 'PER_DIEM' },
+                                                    { label: 'Other', value: 'OTHER' },
+                                                ]}
+                                                onChange={field.onChange}
+                                                placeholder="Select employment type(s)"
+                                            />
+                                        </FormControl>
+                                        <FormDescription>Used for Google job structured data.</FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}

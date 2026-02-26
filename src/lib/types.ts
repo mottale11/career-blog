@@ -47,6 +47,7 @@ export type Opportunity = {
   salaryMin?: number | null;
   salaryMax?: number | null;
   salaryPeriod?: 'HOUR' | 'DAY' | 'WEEK' | 'MONTH' | 'YEAR' | null;
+  employmentType?: string[] | null;
   metaTitle?: string;
   metaDescription?: string;
 };

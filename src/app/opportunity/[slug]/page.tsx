@@ -222,6 +222,9 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
                       },
                     }
                     : {}),
+                  ...(opportunity.employmentType && opportunity.employmentType.length > 0
+                    ? { employmentType: opportunity.employmentType.length === 1 ? opportunity.employmentType[0] : opportunity.employmentType }
+                    : {}),
                 }),
               }}
             />
