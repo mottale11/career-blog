@@ -200,6 +200,28 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
                       addressCountry: opportunity.country,
                     },
                   },
+                  ...(opportunity.salaryMin != null && opportunity.salaryPeriod
+                    ? {
+                      baseSalary: {
+                        '@type': 'MonetaryAmount',
+                        currency: 'USD',
+                        value:
+                          opportunity.salaryMax != null &&
+                            opportunity.salaryMax !== opportunity.salaryMin
+                            ? {
+                              '@type': 'QuantitativeValue',
+                              minValue: opportunity.salaryMin,
+                              maxValue: opportunity.salaryMax,
+                              unitText: opportunity.salaryPeriod,
+                            }
+                            : {
+                              '@type': 'QuantitativeValue',
+                              value: opportunity.salaryMin,
+                              unitText: opportunity.salaryPeriod,
+                            },
+                      },
+                    }
+                    : {}),
                 }),
               }}
             />
