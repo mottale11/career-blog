@@ -90,7 +90,7 @@ export async function createOpportunity(data: any) {
 
     if (error) {
         console.error('Error creating opportunity:', error);
-        throw new Error('Failed to create opportunity: ' + error.message);
+        throw new Error('Failed to create opportunity: ' + (error.message || JSON.stringify(error)));
     }
 
     revalidatePath('/admin/opportunities');
@@ -139,7 +139,7 @@ export async function updateOpportunity(id: string, data: any) {
 
     if (error) {
         console.error('Error updating opportunity:', error);
-        throw new Error('Failed to update opportunity');
+        throw new Error('Failed to update opportunity: ' + (error.message || JSON.stringify(error)));
     }
 
     revalidatePath('/admin/opportunities');
