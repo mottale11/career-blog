@@ -3,8 +3,11 @@
 import { createClient, createAdminClient } from '@/lib/supabase-server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { slugify } from '@/lib/utils'; // Assuming this executes safely on server
+import { slugify } from '@/lib/utils';
 import { Opportunity } from '@/lib/types';
+import { notifyGoogleIndexing } from '@/lib/google-indexing';
+
+const SITE_URL = 'https://www.jobslot.site';
 
 // We can define the input type based on the form values or the Opportunity type
 // For simplicity, we'll accept a Partial<Opportunity> but require key fields for creation
@@ -94,8 +97,13 @@ export async function createOpportunity(data: any) {
         throw new Error('Failed to create opportunity: ' + (error.message || JSON.stringify(error)));
     }
 
+    // Notify Google Indexing API when published
+    if (data.status === 'published') {
+        await notifyGoogleIndexing(`${SITE_URL}/opportunity/${finalSlug}`, 'URL_UPDATED');
+    }
+
     revalidatePath('/admin/opportunities');
-    revalidatePath('/'); // Homepage might change
+    revalidatePath('/');
     return { success: true };
 }
 
@@ -142,6 +150,11 @@ export async function updateOpportunity(id: string, data: any) {
     if (error) {
         console.error('Error updating opportunity:', error);
         throw new Error('Failed to update opportunity: ' + (error.message || JSON.stringify(error)));
+    }
+
+    // Notify Google Indexing API when published
+    if (data.status === 'published') {
+        await notifyGoogleIndexing(`${SITE_URL}/opportunity/${data.slug}`, 'URL_UPDATED');
     }
 
     revalidatePath('/admin/opportunities');
@@ -197,13 +210,11 @@ export async function deleteOpportunity(id: string) {
         throw new Error('Failed to delete opportunity');
     }
 
-    // 4. Revalidate paths
-    revalidatePath('/admin/opportunities');
-    revalidatePath('/'); // Homepage
+    // 4. Revalidate paths & notify Google of removal
     if (opportunity?.slug) {
+        await notifyGoogleIndexing(`${SITE_URL}/opportunity/${opportunity.slug}`, 'URL_DELETED');
         revalidatePath(`/opportunity/${opportunity.slug}`);
         if (opportunity?.category && Array.isArray(opportunity.category)) {
-            // Revalidate each category page
             opportunity.category.forEach((cat: string) => {
                 revalidatePath(`/${cat.toLowerCase()}`);
             });
@@ -211,4 +222,6 @@ export async function deleteOpportunity(id: string) {
             revalidatePath(`/${(opportunity.category as string).toLowerCase()}`);
         }
     }
+    revalidatePath('/admin/opportunities');
+    revalidatePath('/');
 }
