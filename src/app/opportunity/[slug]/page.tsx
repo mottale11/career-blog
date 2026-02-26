@@ -165,8 +165,8 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
                   <DollarSign className="w-4 h-4" />
                   <span>
                     {opportunity.salaryMax != null && opportunity.salaryMax !== opportunity.salaryMin
-                      ? `$${opportunity.salaryMin.toLocaleString()} – $${opportunity.salaryMax.toLocaleString()}`
-                      : `$${opportunity.salaryMin.toLocaleString()}`}
+                      ? `$${opportunity.salaryMin.toLocaleString('en-US')} – $${opportunity.salaryMax.toLocaleString('en-US')}`
+                      : `$${opportunity.salaryMin.toLocaleString('en-US')}`}
                     {opportunity.salaryPeriod ? ` / ${opportunity.salaryPeriod.charAt(0) + opportunity.salaryPeriod.slice(1).toLowerCase()}` : ''}
                   </span>
                 </div>
