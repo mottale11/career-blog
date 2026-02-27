@@ -9,6 +9,7 @@ export async function getOpportunities(filters?: {
   industry?: string;
   field?: string;
   level?: string;
+  employmentType?: string;
 }): Promise<Opportunity[]> {
   try {
     const supabase = await createAdminClient();
@@ -33,6 +34,9 @@ export async function getOpportunities(filters?: {
     }
     if (filters?.level && filters.level !== 'all') {
       query = query.eq('level', filters.level);
+    }
+    if (filters?.employmentType && filters.employmentType !== 'all') {
+      query = query.contains('employmentType', [filters.employmentType]);
     }
 
     const { data, error } = await query;

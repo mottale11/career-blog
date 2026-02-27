@@ -1,7 +1,6 @@
 import { getOpportunityBySlug, getOpportunities } from '@/lib/data';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import {
   Building,
@@ -91,15 +90,6 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
     notFound();
   }
 
-  // Provide a fallback image if the image URL is empty or invalid
-  const imageUrl = opportunity.image &&
-    opportunity.image.trim() !== '' &&
-    !opportunity.image.includes('data:image/png;base64,') &&
-    opportunity.image !== 'null' &&
-    opportunity.image !== 'undefined'
-    ? opportunity.image
-    : `https://picsum.photos/seed/${opportunity.slug}/800/400`;
-
   // Use the first category for similar opportunities recommendation
   const primaryCategory = Array.isArray(opportunity.category) ? opportunity.category[0] : opportunity.category;
 
@@ -112,17 +102,6 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
         <div className="lg:col-span-2">
           <article>
-            <div className="relative h-64 md:h-96 w-full rounded-lg overflow-hidden mb-8">
-              <Image
-                src={imageUrl}
-                alt={opportunity.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 67vw"
-                data-ai-hint={opportunity.imageHint || `Image for ${opportunity.title}`}
-                priority
-              />
-            </div>
 
             <div className="flex flex-wrap gap-2 mb-2">
               {Array.isArray(opportunity.category) ? (

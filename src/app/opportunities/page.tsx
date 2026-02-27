@@ -10,6 +10,7 @@ type SearchParams = {
   country?: string;
   level?: string;
   industry?: string;
+  employmentType?: string;
 };
 
 export default async function OpportunitiesPage({
@@ -38,6 +39,7 @@ async function OpportunityGrid({ searchParams }: { searchParams: SearchParams })
     location: searchParams.country,
     level: searchParams.level,
     industry: searchParams.industry,
+    employmentType: searchParams.employmentType,
   };
 
   let opportunities = await getOpportunities(filters);
@@ -52,9 +54,16 @@ async function OpportunityGrid({ searchParams }: { searchParams: SearchParams })
     );
   }
 
+  const employmentLabels: Record<string, string> = {
+    FULL_TIME: 'Full Time', PART_TIME: 'Part Time', CONTRACTOR: 'Contractor',
+    TEMPORARY: 'Temporary', INTERN: 'Intern', VOLUNTEER: 'Volunteer',
+    PER_DIEM: 'Per Diem', REMOTE: 'Remote', OTHER: 'Other',
+  };
   const title = searchParams.q
     ? `Search results for "${searchParams.q}"`
-    : 'All Opportunities';
+    : searchParams.employmentType
+      ? `${employmentLabels[searchParams.employmentType] ?? searchParams.employmentType} Opportunities`
+      : 'All Opportunities';
 
   return (
     <div>

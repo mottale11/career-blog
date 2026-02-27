@@ -36,15 +36,18 @@ import React, { Suspense } from 'react';
 const navItems: NavItem[] = [
   { name: 'AI Job Finder', href: '/foryou', icon: User },
   {
-    name: 'Jobs',
-    href: '/opportunities/Jobs',
+    name: 'Employment Type',
+    href: '/opportunities',
     icon: Briefcase,
     children: [
-      { name: 'Entry Level Jobs', href: '/opportunities?category=Jobs&q=Entry+Level' },
-      { name: 'Mid Level Jobs', href: '/opportunities?category=Jobs&q=Mid+Level' },
-      { name: 'Senior Level Jobs', href: '/opportunities?category=Jobs&q=Senior+Level' },
-      { name: 'Remote Jobs', href: '/opportunities?category=Jobs&q=Remote' },
-      { name: 'Government Jobs', href: '/opportunities?category=Jobs&q=Government' },
+      { name: 'Full Time', href: '/opportunities?employmentType=FULL_TIME' },
+      { name: 'Part Time', href: '/opportunities?employmentType=PART_TIME' },
+      { name: 'Contractor', href: '/opportunities?employmentType=CONTRACTOR' },
+      { name: 'Temporary', href: '/opportunities?employmentType=TEMPORARY' },
+      { name: 'Intern', href: '/opportunities?employmentType=INTERN' },
+      { name: 'Volunteer', href: '/opportunities?employmentType=VOLUNTEER' },
+      { name: 'Per Diem', href: '/opportunities?employmentType=PER_DIEM' },
+      { name: 'Remote', href: '/opportunities?employmentType=REMOTE' },
     ],
   },
   { name: 'Career Advice', href: '/opportunities/Career-Advice', icon: Lightbulb },
@@ -82,7 +85,7 @@ export function Header() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuItem asChild>
-                      <Link href={item.href}>All Jobs</Link>
+                      <Link href={item.href}>All Employment Types</Link>
                     </DropdownMenuItem>
                     {item.children.map((child) => (
                       <DropdownMenuItem key={child.name} asChild>
@@ -180,7 +183,7 @@ export function Header() {
                                 onClick={() => setIsSheetOpen(false)}
                                 className="block rounded-md px-3 py-2 text-base font-medium hover:bg-accent hover:text-accent-foreground"
                               >
-                                All Jobs
+                                All Employment Types
                               </Link>
                               {item.children.map((child) => (
                                 <Link

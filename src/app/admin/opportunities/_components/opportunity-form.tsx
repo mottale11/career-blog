@@ -610,6 +610,7 @@ export function OpportunityForm({ opportunity, categories, industries, fields }:
                                                     { label: 'Intern', value: 'INTERN' },
                                                     { label: 'Volunteer', value: 'VOLUNTEER' },
                                                     { label: 'Per Diem', value: 'PER_DIEM' },
+                                                    { label: 'Remote', value: 'REMOTE' },
                                                     { label: 'Other', value: 'OTHER' },
                                                 ]}
                                                 onChange={field.onChange}
