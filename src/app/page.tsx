@@ -2,6 +2,7 @@ import { FilterBar } from '@/components/filter-bar';
 import { Hero } from '@/components/hero';
 import { NewsletterForm } from '@/components/newsletter-form';
 import { OpportunityListSection } from '@/components/opportunity-list-section';
+import { FeaturedSlider } from '@/components/featured-slider';
 import { getOpportunities } from '@/lib/data';
 import { getIndustries } from '@/lib/industries';
 import { getFields } from '@/lib/fields';
@@ -35,13 +36,13 @@ export default async function Home(props: {
       <Hero />
       <div className="container mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <FilterBar industriesList={industriesList} fieldsList={fieldsList} />
-        <OpportunityListSection
-          title="Hiring Now"
+        <FeaturedSlider
+          title="Featured Opportunities"
           opportunities={featuredOpportunities}
           className="mt-12"
         />
         <OpportunityListSection
-          title="Featured Opportunities"
+          title="Recent Opportunities"
           opportunities={trendingOpportunities}
           className="mt-12"
         />

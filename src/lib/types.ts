@@ -37,8 +37,8 @@ export type Opportunity = {
   applicationLink: string;
   featured: boolean;
   trending: boolean;
-  image: string;
-  imageHint: string;
+  image?: string;
+  imageHint?: string;
   tags: string[];
   industries: string[];
   fields: string[];

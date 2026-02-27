@@ -44,7 +44,7 @@ import type { Field } from '@/lib/fields';
 import { format, isValid } from 'date-fns';
 import { slugify } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
-import { uploadImage } from '@/lib/storage';
+
 import { MultiSelect } from '@/components/ui/multi-select';
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
 
@@ -71,8 +71,6 @@ const opportunitySchema = z.object({
     trending: z.boolean(),
     status: z.enum(['draft', 'published']),
     tags: z.string(),
-    image: z.string().url(),
-    imageHint: z.string(),
     salaryMin: z.coerce.number().nullable().optional(),
     salaryMax: z.coerce.number().nullable().optional(),
     salaryPeriod: z.enum(salaryPeriods).nullable().optional(),
@@ -113,8 +111,6 @@ export function OpportunityForm({ opportunity, categories, industries, fields }:
         trending: opportunity?.trending ?? false,
         status: opportunity?.status ?? 'draft',
         tags: opportunity?.tags.join(', ') ?? '',
-        image: opportunity?.image ?? 'https://picsum.photos/seed/new-post/600/400',
-        imageHint: opportunity?.imageHint ?? '',
         salaryMin: opportunity?.salaryMin ?? null,
         salaryMax: opportunity?.salaryMax ?? null,
         salaryPeriod: opportunity?.salaryPeriod ?? null,
@@ -129,7 +125,6 @@ export function OpportunityForm({ opportunity, categories, industries, fields }:
     });
 
     const [isLoading, setIsLoading] = React.useState(false);
-    const [isUploadingImage, setIsUploadingImage] = React.useState(false);
 
     async function onSubmit(data: OpportunityFormValues) {
         setIsLoading(true);
@@ -512,81 +507,8 @@ export function OpportunityForm({ opportunity, categories, industries, fields }:
                     </Card>
 
                     <Card>
-                        <CardHeader><CardTitle>Media & Links</CardTitle></CardHeader>
+                        <CardHeader><CardTitle>Links</CardTitle></CardHeader>
                         <CardContent className="space-y-4">
-                            <FormField
-                                control={form.control}
-                                name="image"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Image</FormLabel>
-                                        <FormControl>
-                                            <div className="space-y-4">
-                                                {/* Image Preview */}
-                                                {field.value && (
-                                                    <div className="relative aspect-video w-full overflow-hidden rounded-md border">
-                                                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                        <img
-                                                            src={field.value}
-                                                            alt="Preview"
-                                                            className="h-full w-full object-cover"
-                                                        />
-                                                    </div>
-                                                )}
-
-                                                <div className="flex items-center gap-4">
-                                                    <Input
-                                                        type="file"
-                                                        accept="image/*"
-                                                        disabled={isUploadingImage}
-                                                        className="file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 file:border-0 file:rounded-md file:px-4 file:py-2 file:mr-4 file:font-semibold cursor-pointer"
-                                                        onChange={async (e) => {
-                                                            const file = e.target.files?.[0];
-                                                            if (file) {
-                                                                setIsUploadingImage(true);
-                                                                try {
-                                                                    const url = await uploadImage(file);
-                                                                    field.onChange(url);
-                                                                } catch (error) {
-                                                                    console.error(error);
-                                                                    toast({
-                                                                        title: "Upload failed",
-                                                                        description: "Failed to upload image. Please try again.",
-                                                                        variant: "destructive"
-                                                                    });
-                                                                } finally {
-                                                                    setIsUploadingImage(false);
-                                                                }
-                                                            }
-                                                        }}
-                                                    />
-                                                </div>
-
-                                                <div className="flex gap-2">
-                                                    <Input placeholder="https://example.com/image.jpg" {...field} disabled={isUploadingImage} />
-                                                </div>
-                                                <FormDescription>
-                                                    Upload an image or paste a URL.
-                                                </FormDescription>
-                                            </div>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="imageHint"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Image AI Hint</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="e.g., tech office" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
                             <FormField
                                 control={form.control}
                                 name="applicationLink"
@@ -707,7 +629,7 @@ export function OpportunityForm({ opportunity, categories, industries, fields }:
                     <Button
                         type="submit"
                         size="lg"
-                        disabled={isLoading || isUploadingImage}
+                        disabled={isLoading}
                         onClick={() => form.setValue('status', 'published')}
                     >
                         <Save className="mr-2 h-4 w-4" />
@@ -717,7 +639,7 @@ export function OpportunityForm({ opportunity, categories, industries, fields }:
                         type="submit"
                         variant="outline"
                         size="lg"
-                        disabled={isLoading || isUploadingImage}
+                        disabled={isLoading}
                         onClick={() => form.setValue('status', 'draft')}
                     >
                         Save as Draft
