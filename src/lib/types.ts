@@ -10,6 +10,9 @@ export type Category =
   | 'Study Abroad';
 
 export type Level =
+  | 'Entry Level'
+  | 'Mid-Level'
+  | 'Senior Level'
   | 'Undergraduate'
   | 'Graduate'
   | 'Postgraduate'

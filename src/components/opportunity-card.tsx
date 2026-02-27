@@ -17,21 +17,13 @@ type OpportunityCardProps = {
 };
 
 export function OpportunityCard({ opportunity }: OpportunityCardProps) {
-  const categories = Array.isArray(opportunity.category)
-    ? opportunity.category.slice(0, 2)
-    : [opportunity.category];
-
-  const empTypes = (opportunity.employmentType ?? []).slice(0, 1);
 
   return (
     <Card className="flex flex-col h-full transition-all hover:shadow-lg hover:-translate-y-1 text-sm">
       <CardHeader className="pb-2">
         {/* Tags row at the top */}
         <div className="flex flex-wrap gap-1.5 mb-3">
-          {categories.map((cat) => (
-            <TagBadge key={cat} label={cat} />
-          ))}
-          {empTypes.map((type) => (
+          {(opportunity.employmentType ?? []).slice(0, 2).map((type) => (
             <TagBadge key={type} label={type} />
           ))}
         </div>

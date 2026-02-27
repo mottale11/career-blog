@@ -12,7 +12,7 @@ import {
 
 // Static lists
 const locations = ['Kenya', 'Uganda', 'Tanzania', 'Rwanda', 'Ethiopia', 'South Africa', 'Nigeria', 'Ghana', 'USA', 'UK', 'Australia', 'Ireland', 'Global'];
-const levels = ['Undergraduate', 'Graduate', 'Postgraduate', 'Professional', 'Internship', 'All Levels'];
+const levels = ['Entry Level', 'Mid-Level', 'Senior Level', 'Undergraduate', 'Graduate', 'Postgraduate', 'Professional', 'Internship', 'All Levels'];
 
 interface FilterBarProps {
     industriesList?: { id: string; name: string }[];

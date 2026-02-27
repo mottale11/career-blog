@@ -49,7 +49,7 @@ import { MultiSelect } from '@/components/ui/multi-select';
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
 
 const countries = ['Kenya', 'Uganda', 'Tanzania', 'Rwanda', 'Ethiopia', 'South Africa', 'Nigeria', 'Ghana', 'USA', 'UK', 'Australia', 'Ireland', 'Global'];
-const levels: Level[] = ['Undergraduate', 'Graduate', 'Postgraduate', 'Professional', 'Internship', 'All Levels'];
+const levels: Level[] = ['Entry Level', 'Mid-Level', 'Senior Level', 'Undergraduate', 'Graduate', 'Postgraduate', 'Professional', 'Internship', 'All Levels'];
 
 const salaryPeriods = ['HOUR', 'DAY', 'WEEK', 'MONTH', 'YEAR'] as const;
 
