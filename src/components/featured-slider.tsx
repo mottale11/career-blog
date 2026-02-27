@@ -13,19 +13,42 @@ type FeaturedSliderProps = {
     className?: string;
 };
 
-const VISIBLE = 4; // cards visible at once
+// Responsive visible count based on window width
+function useVisibleCount() {
+    const [visible, setVisible] = React.useState(1); // default to 1 for SSR safety
+
+    React.useEffect(() => {
+        function update() {
+            if (window.innerWidth >= 1024) setVisible(4);      // lg+
+            else if (window.innerWidth >= 640) setVisible(2);  // sm–md
+            else setVisible(1);                                 // mobile
+        }
+        update();
+        window.addEventListener('resize', update);
+        return () => window.removeEventListener('resize', update);
+    }, []);
+
+    return visible;
+}
 
 export function FeaturedSlider({ title, opportunities, className }: FeaturedSliderProps) {
     const [index, setIndex] = React.useState(0);
+    const visible = useVisibleCount();
 
     if (opportunities.length === 0) return null;
 
-    const max = Math.max(0, opportunities.length - VISIBLE);
+    const max = Math.max(0, opportunities.length - visible);
+
+    // Reset index when visible count changes (e.g. rotate phone)
+    React.useEffect(() => {
+        setIndex((i) => Math.min(i, Math.max(0, opportunities.length - visible)));
+    }, [visible, opportunities.length]);
 
     const prev = () => setIndex((i) => Math.max(0, i - 1));
     const next = () => setIndex((i) => Math.min(max, i + 1));
 
-    const translateX = `translateX(calc(-${index} * (100% / ${VISIBLE} + 1rem / ${VISIBLE})))`;
+    const gap = 16; // 1rem in px
+    const translateX = `translateX(calc(-${index} * (100% / ${visible} + ${gap / visible}px)))`;
 
     return (
         <section className={cn(className)}>
@@ -66,7 +89,7 @@ export function FeaturedSlider({ title, opportunities, className }: FeaturedSlid
                         <div
                             key={opportunity.id}
                             className="min-w-0 flex-shrink-0"
-                            style={{ width: `calc((100% - ${VISIBLE - 1} * 1rem) / ${VISIBLE})` }}
+                            style={{ width: `calc((100% - ${visible - 1} * 1rem) / ${visible})` }}
                         >
                             <OpportunityCard opportunity={opportunity} />
                         </div>
@@ -75,7 +98,7 @@ export function FeaturedSlider({ title, opportunities, className }: FeaturedSlid
             </div>
 
             {/* Dot indicators */}
-            {opportunities.length > VISIBLE && (
+            {opportunities.length > visible && (
                 <div className="flex justify-center gap-1.5 mt-4">
                     {Array.from({ length: max + 1 }).map((_, i) => (
                         <button
