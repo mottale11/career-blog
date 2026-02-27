@@ -376,7 +376,13 @@ export function OpportunityForm({ opportunity, categories, industries, fields }:
                                         <FormControl>
                                             <MultiSelect
                                                 selected={field.value}
-                                                options={categories.map(c => ({ label: c.name, value: c.name }))}
+                                                options={[
+                                                    { label: 'Jobs', value: 'Jobs' },
+                                                    { label: 'Internships', value: 'Internships' },
+                                                    { label: 'Scholarships', value: 'Scholarships' },
+                                                    { label: 'Fellowships', value: 'Fellowships' },
+                                                    { label: 'Grants', value: 'Grants' },
+                                                ]}
                                                 onChange={field.onChange}
                                                 placeholder="Select categories"
                                             />
