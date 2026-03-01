@@ -53,6 +53,8 @@ export type Opportunity = {
   employmentType?: string[] | null;
   metaTitle?: string;
   metaDescription?: string;
+  streetAddress?: string | null;
+  postalCode?: string | null;
 };
 
 export type NavItem = {

@@ -77,6 +77,8 @@ const opportunitySchema = z.object({
     employmentType: z.array(z.string()).nullable().optional(),
     metaTitle: z.string().optional(),
     metaDescription: z.string().optional(),
+    streetAddress: z.string().optional(),
+    postalCode: z.string().optional(),
 });
 
 type OpportunityFormValues = z.infer<typeof opportunitySchema>;
@@ -117,6 +119,8 @@ export function OpportunityForm({ opportunity, categories, industries, fields }:
         employmentType: opportunity?.employmentType ?? [],
         metaTitle: opportunity?.metaTitle ?? '',
         metaDescription: opportunity?.metaDescription ?? '',
+        streetAddress: opportunity?.streetAddress ?? '',
+        postalCode: opportunity?.postalCode ?? '',
     };
 
     const form = useForm<OpportunityFormValues>({
@@ -469,6 +473,34 @@ export function OpportunityForm({ opportunity, categories, industries, fields }:
                                         <FormControl>
                                             <Input placeholder="e.g., Mountain View, CA" {...field} />
                                         </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="streetAddress"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Street Address <span className="text-muted-foreground font-normal text-xs">(optional)</span></FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="e.g., 123 Main St" {...field} />
+                                        </FormControl>
+                                        <FormDescription>Used for Google job structured data.</FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="postalCode"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Postal / ZIP Code <span className="text-muted-foreground font-normal text-xs">(optional)</span></FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="e.g., 94043" {...field} />
+                                        </FormControl>
+                                        <FormDescription>Used for Google job structured data.</FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}

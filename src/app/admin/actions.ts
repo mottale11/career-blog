@@ -90,6 +90,8 @@ export async function createOpportunity(data: any) {
         salaryMax: data.salaryMax ?? null,
         salaryPeriod: data.salaryPeriod ?? null,
         employmentType: data.employmentType ?? [],
+        street_address: data.streetAddress ?? null,
+        postal_code: data.postalCode ?? null,
     });
 
     if (error) {
@@ -145,6 +147,8 @@ export async function updateOpportunity(id: string, data: any) {
         salaryMax: data.salaryMax ?? null,
         salaryPeriod: data.salaryPeriod ?? null,
         employmentType: data.employmentType ?? [],
+        street_address: data.streetAddress ?? null,
+        postal_code: data.postalCode ?? null,
     }).eq('id', id);
 
     if (error) {

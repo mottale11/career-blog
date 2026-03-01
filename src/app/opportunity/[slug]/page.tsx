@@ -165,7 +165,9 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
                       '@type': 'Place',
                       address: {
                         '@type': 'PostalAddress',
+                        ...(opportunity.streetAddress ? { streetAddress: opportunity.streetAddress } : {}),
                         addressRegion: opportunity.location,
+                        ...(opportunity.postalCode ? { postalCode: opportunity.postalCode } : {}),
                         addressCountry: opportunity.country,
                       },
                     },
