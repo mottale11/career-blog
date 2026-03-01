@@ -155,56 +155,82 @@ export default async function OpportunityPage({ params }: OpportunityPageProps) 
             <script
               type="application/ld+json"
               dangerouslySetInnerHTML={{
-                __html: JSON.stringify({
-                  '@context': 'https://schema.org',
-                  '@type': 'JobPosting',
-                  title: opportunity.title,
-                  description: opportunity.description,
-                  identifier: {
-                    '@type': 'PropertyValue',
-                    name: opportunity.organization,
-                    value: opportunity.id,
-                  },
-                  datePosted: opportunity.created_at,
-                  validThrough: opportunity.deadline,
-                  hiringOrganization: {
-                    '@type': 'Organization',
-                    name: opportunity.organization,
-                  },
-                  jobLocation: {
-                    '@type': 'Place',
-                    address: {
-                      '@type': 'PostalAddress',
-                      addressLocality: opportunity.location,
-                      addressCountry: opportunity.country,
-                    },
-                  },
-                  ...(opportunity.salaryMin != null && opportunity.salaryPeriod
-                    ? {
-                      baseSalary: {
-                        '@type': 'MonetaryAmount',
-                        currency: 'USD',
-                        value:
-                          opportunity.salaryMax != null &&
-                            opportunity.salaryMax !== opportunity.salaryMin
-                            ? {
-                              '@type': 'QuantitativeValue',
-                              minValue: opportunity.salaryMin,
-                              maxValue: opportunity.salaryMax,
-                              unitText: opportunity.salaryPeriod,
-                            }
-                            : {
-                              '@type': 'QuantitativeValue',
-                              value: opportunity.salaryMin,
-                              unitText: opportunity.salaryPeriod,
-                            },
+                __html: JSON.stringify((() => {
+                  const isRemote = opportunity.employmentType?.includes('REMOTE') ?? false;
+                  const hasPhysicalLocation = !!opportunity.location;
+
+                  // jobLocation block — always present when a location is set; addressRegion satisfies Google's requirement
+                  const jobLocationBlock = hasPhysicalLocation ? {
+                    jobLocation: {
+                      '@type': 'Place',
+                      address: {
+                        '@type': 'PostalAddress',
+                        addressRegion: opportunity.location,
+                        addressCountry: opportunity.country,
                       },
-                    }
-                    : {}),
-                  ...(opportunity.employmentType && opportunity.employmentType.length > 0
-                    ? { employmentType: opportunity.employmentType.length === 1 ? opportunity.employmentType[0] : opportunity.employmentType }
-                    : {}),
-                }),
+                    },
+                  } : {};
+
+                  // TELECOMMUTE block — added whenever REMOTE is among employment types
+                  const telecommuteBlock = isRemote ? {
+                    jobLocationType: 'TELECOMMUTE',
+                    // For remote-only jobs (no physical site), specify where applicants can be located
+                    ...(!hasPhysicalLocation ? {
+                      applicantLocationRequirements: {
+                        '@type': 'Country',
+                        name: opportunity.country === 'Global' ? 'Worldwide' : opportunity.country,
+                      },
+                    } : {}),
+                  } : {};
+
+                  // Salary block
+                  const salaryBlock = opportunity.salaryMin != null && opportunity.salaryPeriod ? {
+                    baseSalary: {
+                      '@type': 'MonetaryAmount',
+                      currency: 'USD',
+                      value: opportunity.salaryMax != null && opportunity.salaryMax !== opportunity.salaryMin
+                        ? {
+                          '@type': 'QuantitativeValue',
+                          minValue: opportunity.salaryMin,
+                          maxValue: opportunity.salaryMax,
+                          unitText: opportunity.salaryPeriod,
+                        }
+                        : {
+                          '@type': 'QuantitativeValue',
+                          value: opportunity.salaryMin,
+                          unitText: opportunity.salaryPeriod,
+                        },
+                    },
+                  } : {};
+
+                  // employmentType — filter out the internal REMOTE marker before emitting
+                  const publicEmploymentTypes = (opportunity.employmentType ?? []).filter(t => t !== 'REMOTE');
+                  const employmentTypeBlock = publicEmploymentTypes.length > 0
+                    ? { employmentType: publicEmploymentTypes.length === 1 ? publicEmploymentTypes[0] : publicEmploymentTypes }
+                    : {};
+
+                  return {
+                    '@context': 'https://schema.org',
+                    '@type': 'JobPosting',
+                    title: opportunity.title,
+                    description: opportunity.description,
+                    identifier: {
+                      '@type': 'PropertyValue',
+                      name: opportunity.organization,
+                      value: opportunity.id,
+                    },
+                    datePosted: opportunity.created_at,
+                    validThrough: opportunity.deadline,
+                    hiringOrganization: {
+                      '@type': 'Organization',
+                      name: opportunity.organization,
+                    },
+                    ...jobLocationBlock,
+                    ...telecommuteBlock,
+                    ...salaryBlock,
+                    ...employmentTypeBlock,
+                  };
+                })()),
               }}
             />
 
