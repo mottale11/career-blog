@@ -18,7 +18,7 @@ export async function getOpportunities(filters?: {
       .from('opportunities')
       .select('*')
       .eq('status', 'published')
-      .order('deadline', { ascending: false });
+      .order('created_at', { ascending: false });
 
     if (filters?.category && filters.category !== 'all') {
       query = query.contains('category', [filters.category]);
