@@ -1,6 +1,5 @@
 'use client';
 
-import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 
 export function AdsenseScript() {
@@ -10,11 +9,11 @@ export function AdsenseScript() {
     if (pathname.startsWith('/admin')) return null;
 
     return (
-        <Script
+        // eslint-disable-next-line @next/next/no-sync-scripts
+        <script
             async
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6472755209598696"
             crossOrigin="anonymous"
-            strategy="afterInteractive"
         />
     );
 }
