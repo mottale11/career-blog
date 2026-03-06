@@ -24,6 +24,9 @@ export const metadata: Metadata = {
     google: '46Cid1mY9s4RHwjPmEBokhdo0OmM3Dv0teaqesQpgJw',
   },
   keywords: ['Jobs', 'Scholarships', 'Internships', 'Fellowships', 'Grants', 'Career Advice', 'Jobslot', 'Career Development', 'Study Abroad'],
+  other: {
+    'google-adsense-account': 'ca-pub-6472755209598696',
+  },
 };
 
 export default function RootLayout({
