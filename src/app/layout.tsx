@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { ConditionalLayout } from '@/components/conditional-layout';
 import Script from 'next/script';
 import { Analytics } from "@vercel/analytics/next";
+import { AdsenseScript } from '@/components/adsense-script';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.jobslot.site'),
@@ -74,6 +75,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <ConditionalLayout>{children}</ConditionalLayout>
         <Toaster />
         <Analytics />
+        <AdsenseScript />
       </body>
     </html>
   );
