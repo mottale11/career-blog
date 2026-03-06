@@ -34,11 +34,11 @@ export function Footer() {
             </h3>
             <ul className="mt-4 space-y-2 text-sm">
               <li><Link href="/" className="text-muted-foreground hover:text-primary">Home</Link></li>
-              <li><Link href="/opportunities/Jobs" className="text-muted-foreground hover:text-primary">Jobs</Link></li>
-              <li><Link href="/opportunities/Scholarships" className="text-muted-foreground hover:text-primary">Scholarships</Link></li>
-              <li><Link href="/opportunities/Internships" className="text-muted-foreground hover:text-primary">Internships</Link></li>
-              <li><Link href="/opportunities/Fellowships" className="text-muted-foreground hover:text-primary">Fellowships & Grants</Link></li>
-              <li><Link href="/opportunities/Study-Abroad" className="text-muted-foreground hover:text-primary">Study Abroad</Link></li>
+              <li><Link href="/opportunities/jobs" className="text-muted-foreground hover:text-primary">Jobs</Link></li>
+              <li><Link href="/opportunities/scholarships" className="text-muted-foreground hover:text-primary">Scholarships</Link></li>
+              <li><Link href="/opportunities/internships" className="text-muted-foreground hover:text-primary">Internships</Link></li>
+              <li><Link href="/opportunities/fellowships" className="text-muted-foreground hover:text-primary">Fellowships &amp; Grants</Link></li>
+              <li><Link href="/opportunities/study-abroad" className="text-muted-foreground hover:text-primary">Study Abroad</Link></li>
               <li><Link href="/about" className="text-muted-foreground hover:text-primary">About Us</Link></li>
               <li><Link href="/contact" className="font-semibold text-primary hover:underline">Contact Us</Link></li>
             </ul>
@@ -59,7 +59,7 @@ export function Footer() {
               Resources
             </h3>
             <ul className="mt-4 space-y-2 text-sm">
-              <li><Link href="/opportunities/Study-Abroad" className="text-muted-foreground hover:text-primary">Study Abroad Guides</Link></li>
+              <li><Link href="/opportunities/study-abroad" className="text-muted-foreground hover:text-primary">Study Abroad Guides</Link></li>
             </ul>
           </div>
         </div>
