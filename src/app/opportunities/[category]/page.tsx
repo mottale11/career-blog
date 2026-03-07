@@ -10,11 +10,14 @@ type CategoryPageProps = {
   }>;
 };
 
+// These categories have dedicated pages and must be excluded from [category] dynamic routing
+const DEDICATED_PAGES = ['career-advice', 'study-abroad'];
+
 export async function generateStaticParams() {
   const categories = await getCategories();
-  return categories.map((category: Category) => ({
-    category: slugify(category),
-  }));
+  return categories
+    .map((category: Category) => ({ category: slugify(category) }))
+    .filter(({ category }) => !DEDICATED_PAGES.includes(category));
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
